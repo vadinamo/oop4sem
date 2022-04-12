@@ -1,0 +1,30 @@
+@model lab1.Models.Client.TransferModel
+ 
+<h2>Банковский перевод</h2>
+ 
+<form asp-action="BankTransfer" asp-controller="Client" asp-anti-forgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div class="input-group mb-3">
+            <select class="custom-select" id="inputGroupSelect01" asp-for="@Model.FromAccountId">
+                @foreach (var acc in Model.ClientAccounts)
+                {
+                    <option value="@acc.Id">@acc.Name : @acc.Money</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label asp-for="ToAccountId">Введите номер счета получателя</label><br/>
+            <input type="text" asp-for="ToAccountId"/>
+            <span asp-validation-for="ToAccountId"/>
+        </div>
+        <div>
+            <label asp-for="TransferAmount">Введите количество денег</label><br/>
+            <input type="text" asp-for="TransferAmount"/>
+            <span asp-validation-for="TransferAmount"/>
+        </div>
+        <div>
+            <input type="submit" value="Подтвердить"/>
+        </div>
+    </div>
+</form>

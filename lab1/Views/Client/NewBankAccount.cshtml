@@ -1,0 +1,30 @@
+@model lab1.Models.Client.NewBankAccountModel
+ 
+<h2>Регистрация</h2>
+ 
+<form asp-action="NewBankAccount" asp-controller="Client" asp-anti-forgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div class="input-group mb-3">
+            <select class="custom-select" id="inputGroupSelect01" asp-for="@Model!.BankId">
+                @foreach (var bank in Model.Banks)
+                {
+                    <option value="@bank.Id">@bank.LegalName</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label asp-for="AccountName">Введите имя счета</label><br/>
+            <input type="text" asp-for="AccountName"/>
+            <span asp-validation-for="AccountName"/>
+        </div>
+        <div>
+            <label asp-for="Money">Введите количество денег</label><br/>
+            <input type="text" asp-for="Money"/>
+            <span asp-validation-for="Money"/>
+        </div>
+        <div>
+            <input type="submit" value="Подтвердить"/>
+        </div>
+    </div>
+</form>

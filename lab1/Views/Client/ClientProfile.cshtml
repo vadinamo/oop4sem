@@ -1,0 +1,194 @@
+@model lab1.Models.Client.ClientProfileModel
+
+<h1>Профиль</h1>
+
+<div>
+    <h>Роль: @Model.Client.Role.Name</h> <br/>
+    <h>Фамилия: @Model.Client.Surname</h> <br/>
+    <h>Имя: @Model.Client.FirstName</h> <br/>
+    <h>Отчество: @Model.Client.Patronymic</h> <br/>
+
+    <h>Серия и номер паспорта: @Model.Client.PassportSeriesAndNumber</h> <br/>
+    <h>Идентификационный номер паспорта: @Model.Client.IdentificationNumber</h> <br/>
+
+    <h>Почта: @Model.Client.Email</h> <br/>
+    <h>Номер телефона: @Model.Client.PhoneNumber</h> <br/>
+
+    <h2>Счета:</h2>
+    
+    <form class="nav-link text-dark" asp-controller="Client" asp-action="NewBankAccount" method="get">
+        <input type="submit" value="Открыть счет">
+    </form>
+    
+    @if (@Model.Client.BankAccounts.Count == 0)
+    {
+        <h>Нет открытых счетов</h>
+    }
+    else
+    {
+        <form class="nav-link text-dark" asp-controller="Client" asp-action="BankTransfer" method="get">
+            <input type="submit" value="Перевод">
+        </form>
+        
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Номер счета
+                </th>
+                <th>
+                    Банк
+                </th>
+                <th>
+                    Количество денег
+                </th>
+                <th></th>
+            </tr>
+            
+            @foreach (var account in @Model.Client.BankAccounts)
+            {
+                <tr>
+                    <td>@account.Name</td>
+                    <td>@account.Id</td>
+                    <td>@account.Bank?.LegalName</td>
+                    <td>@account.Money</td>
+                    <td>
+                         <a asp-action="CloseBankAccount" asp-controller="Client" asp-route-id="@account.Id">Закрыть счет</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    
+    <h2>Вклады:</h2>
+    @if (@Model.Client.BankAccounts.Count != 0)
+    {
+        <form class="nav-link text-dark" asp-controller="Client" asp-action="NewBankDeposit" method="get">
+            <input type="submit" value="Открыть вклад">
+        </form>
+    }
+    else
+    {
+        <h>Для создание вклада необходимо открыть счет.</h>
+    }
+
+    @if (@Model.Client.BankDeposits.Count == 0)
+    {
+        <h>Нет вкладов</h>
+    }
+    else
+    {
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Банк
+                </th>
+                <th>
+                    Счет
+                </th>
+                <th>
+                    Дата вклада
+                </th>
+                <th>
+                    Дата снятия
+                </th>
+                <th>
+                    Процент
+                </th>
+                <th>
+                    Сумма вклада
+                </th>
+                <th></th>
+            </tr>
+            
+            @foreach (var deposit in @Model.Client.BankDeposits)
+            {
+                <tr>
+                    <td>@deposit.Name</td>
+                    <td>@deposit.BankAccount.Bank?.LegalName</td>
+                    <td>@deposit.BankAccount.Name</td>
+                    <td>@deposit.DepositDate.ToLongDateString()</td>
+                    <td>@deposit.WithdrawDate.ToLongDateString()</td>
+                    <td>@deposit.Percent</td>
+                    <td>@deposit.Money</td>
+                    <td>
+                        <a asp-action="CloseBankDeposit" asp-controller="Client" asp-route-id="@deposit.Id">Закрыть счет</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    
+    <h2>Кредиты:</h2>
+    @if (@Model.Client.BankAccounts.Count != 0)
+    {
+        <form class="nav-link text-dark" asp-controller="Client" asp-action="NewCredit" method="get">
+            <input type="submit" value="Взять кредит">
+        </form>
+    }
+    else
+    {
+        <h>Для взятия кредита необходимо открыть счет.</h>
+    }
+
+    @if (@Model.Client.BankDeposits.Count == 0)
+    {
+        <h>Нет вкладов</h>
+    }
+    else
+    {
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Банк
+                </th>
+                <th>
+                    Счет
+                </th>
+                <th>
+                    Дата вклада
+                </th>
+                <th>
+                    Дата снятия
+                </th>
+                <th>
+                    Процент
+                </th>
+                <th>
+                    Сумма вклада
+                </th>
+                <th></th>
+            </tr>
+            
+            @foreach (var deposit in @Model.Client.BankDeposits)
+            {
+                <tr>
+                    <td>@deposit.Name</td>
+                    <td>@deposit.BankAccount.Bank?.LegalName</td>
+                    <td>@deposit.BankAccount.Name</td>
+                    <td>@deposit.DepositDate.ToLongDateString()</td>
+                    <td>@deposit.WithdrawDate.ToLongDateString()</td>
+                    <td>@deposit.Percent</td>
+                    <td>@deposit.Money</td>
+                    <td>
+                        <a asp-action="CloseBankDeposit" asp-controller="Client" asp-route-id="@deposit.Id">Закрыть счет</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>

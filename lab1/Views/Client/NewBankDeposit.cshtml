@@ -1,0 +1,42 @@
+@model lab1.Models.Client.NewBankDepositModel
+ 
+<h2>Регистрация</h2>
+ 
+<form asp-action="NewBankDeposit" asp-controller="Client" asp-anti-forgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div class="input-group mb-3">
+            <select class="custom-select" id="inputGroupSelect01" asp-for="@Model!.AccountId">
+                @foreach (var acc in Model.BankAccounts)
+                {
+                    <option value="@acc.Id">@acc.Bank?.LegalName, @acc.Name : @acc.Money</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label asp-for="DepositName">Введите название вклада</label><br/>
+            <input type="text" asp-for="DepositName"/>
+            <span asp-validation-for="DepositName"/>
+        </div>
+        <div>
+            <label asp-for="Money">Введите сумму вклада</label><br/>
+            <input type="text" asp-for="Money"/>
+            <span asp-validation-for="Money"/>
+        </div>
+        <div>
+            <label asp-for="Percent">Введите процент вклада</label><br/>
+            <input type="text" asp-for="Percent"/>
+            <span asp-validation-for="Percent"/>
+        </div>
+        
+        <div>
+            <label asp-for="Percent">Дата снятия</label><br/>
+            <input class="form-control" asp-for="WithdrawDate"/>
+            <span asp-validation-for="WithdrawDate"/>
+        </div>
+        
+        <div>
+            <input type="submit" value="Подтвердить"/>
+        </div>
+    </div>
+</form>
