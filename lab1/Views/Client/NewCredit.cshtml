@@ -1,6 +1,6 @@
-@model lab1.Models.Client.NewBankDepositModel
+@model lab1.Models.Client.NewCreditModel
  
-<h2>Открытие вклада</h2>
+<h2>Взятие кредита</h2>
  
 <form asp-action="NewBankDeposit" asp-controller="Client" asp-anti-forgery="true">
     <div class="validation" asp-validation-summary="ModelOnly"></div>
@@ -14,25 +14,20 @@
             </select>
         </div>
         <div>
-            <label asp-for="DepositName">Введите название вклада</label><br/>
-            <input type="text" asp-for="DepositName"/>
-            <span asp-validation-for="DepositName"/>
-        </div>
-        <div>
-            <label asp-for="Money">Введите сумму вклада</label><br/>
+            <label asp-for="Money">Введите сумму кредита</label><br/>
             <input type="text" asp-for="Money"/>
             <span asp-validation-for="Money"/>
         </div>
         <div>
-            <label asp-for="Percent">Введите процент вклада</label><br/>
+            <label asp-for="Percent">Введите процент кредита</label><br/>
             <input type="text" asp-for="Percent"/>
             <span asp-validation-for="Percent"/>
         </div>
         
         <div>
-            <label asp-for="Percent">Дата снятия</label><br/>
-            <input class="form-control" asp-for="WithdrawDate"/>
-            <span asp-validation-for="WithdrawDate"/>
+            <label asp-for="Percent">Количество месяцев</label><br/>
+            <input type="text" asp-for="Months"/>
+            <span asp-validation-for="Months"/>
         </div>
         
         <div>

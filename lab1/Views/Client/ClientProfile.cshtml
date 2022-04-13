@@ -70,125 +70,120 @@
         <form class="nav-link text-dark" asp-controller="Client" asp-action="NewBankDeposit" method="get">
             <input type="submit" value="Открыть вклад">
         </form>
+        @if (@Model.Client.BankDeposits.Count == 0)
+        {
+            <h>Нет вкладов</h>
+        }
+        else
+        {
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>
+                        Название
+                    </th>
+                    <th>
+                        Банк
+                    </th>
+                    <th>
+                        Счет
+                    </th>
+                    <th>
+                        Дата вклада
+                    </th>
+                    <th>
+                        Дата снятия
+                    </th>
+                    <th>
+                        Процент
+                    </th>
+                    <th>
+                        Сумма вклада
+                    </th>
+                    <th></th>
+                </tr>
+            
+                @foreach (var deposit in @Model.Client.BankDeposits)
+                {
+                    <tr>
+                        <td>@deposit.Name</td>
+                        <td>@deposit.BankAccount.Bank?.LegalName</td>
+                        <td>@deposit.BankAccount.Name</td>
+                        <td>@deposit.DepositDate.ToLongDateString()</td>
+                        <td>@deposit.WithdrawDate.ToLongDateString()</td>
+                        <td>@deposit.Percent</td>
+                        <td>@deposit.Money</td>
+                        <td>
+                            <a asp-action="CloseBankDeposit" asp-controller="Client" asp-route-id="@deposit.Id">Закрыть счет</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
     }
+    
     else
     {
         <h>Для создание вклада необходимо открыть счет.</h>
     }
 
-    @if (@Model.Client.BankDeposits.Count == 0)
-    {
-        <h>Нет вкладов</h>
-    }
-    else
-    {
-        <table class="table">
-            <tbody>
-            <tr>
-                <th>
-                    Название
-                </th>
-                <th>
-                    Банк
-                </th>
-                <th>
-                    Счет
-                </th>
-                <th>
-                    Дата вклада
-                </th>
-                <th>
-                    Дата снятия
-                </th>
-                <th>
-                    Процент
-                </th>
-                <th>
-                    Сумма вклада
-                </th>
-                <th></th>
-            </tr>
-            
-            @foreach (var deposit in @Model.Client.BankDeposits)
-            {
-                <tr>
-                    <td>@deposit.Name</td>
-                    <td>@deposit.BankAccount.Bank?.LegalName</td>
-                    <td>@deposit.BankAccount.Name</td>
-                    <td>@deposit.DepositDate.ToLongDateString()</td>
-                    <td>@deposit.WithdrawDate.ToLongDateString()</td>
-                    <td>@deposit.Percent</td>
-                    <td>@deposit.Money</td>
-                    <td>
-                        <a asp-action="CloseBankDeposit" asp-controller="Client" asp-route-id="@deposit.Id">Закрыть счет</a>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    }
-    
     <h2>Кредиты:</h2>
     @if (@Model.Client.BankAccounts.Count != 0)
     {
         <form class="nav-link text-dark" asp-controller="Client" asp-action="NewCredit" method="get">
             <input type="submit" value="Взять кредит">
         </form>
+        @if (@Model.Client.BankDeposits.Count == 0)
+        {
+            <h>Нет кредитов</h>
+        }
+        else
+        {
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>
+                        Банк
+                    </th>
+                    <th>
+                        Счет
+                    </th>
+                    <th>
+                        Дата получения
+                    </th>
+                    <th>
+                        Количество месяцев
+                    </th>
+                    <th>
+                        Процент
+                    </th>
+                    <th>
+                        Сумма кредита
+                    </th>
+                    @* <th></th> *@
+                </tr>
+            
+                @foreach (var credit in @Model.Client.Credits)
+                {
+                    <tr>
+                        <td>@credit.BankAccount.Bank?.LegalName</td>
+                        <td>@credit.BankAccount.Name</td>
+                        <td>@credit.DepositDate.ToLongDateString()</td>
+                        <td>@credit.MonthCount</td>
+                        <td>@credit.Percent</td>
+                        <td>@credit.Money</td>
+                        @* <td> *@
+                        @*     <a asp-action="CloseBankDeposit" asp-controller="Client" asp-route-id="@deposit.Id">Закрыть счет</a> *@
+                        @* </td> *@
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
     }
     else
     {
         <h>Для взятия кредита необходимо открыть счет.</h>
-    }
-
-    @if (@Model.Client.BankDeposits.Count == 0)
-    {
-        <h>Нет вкладов</h>
-    }
-    else
-    {
-        <table class="table">
-            <tbody>
-            <tr>
-                <th>
-                    Название
-                </th>
-                <th>
-                    Банк
-                </th>
-                <th>
-                    Счет
-                </th>
-                <th>
-                    Дата вклада
-                </th>
-                <th>
-                    Дата снятия
-                </th>
-                <th>
-                    Процент
-                </th>
-                <th>
-                    Сумма вклада
-                </th>
-                <th></th>
-            </tr>
-            
-            @foreach (var deposit in @Model.Client.BankDeposits)
-            {
-                <tr>
-                    <td>@deposit.Name</td>
-                    <td>@deposit.BankAccount.Bank?.LegalName</td>
-                    <td>@deposit.BankAccount.Name</td>
-                    <td>@deposit.DepositDate.ToLongDateString()</td>
-                    <td>@deposit.WithdrawDate.ToLongDateString()</td>
-                    <td>@deposit.Percent</td>
-                    <td>@deposit.Money</td>
-                    <td>
-                        <a asp-action="CloseBankDeposit" asp-controller="Client" asp-route-id="@deposit.Id">Закрыть счет</a>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
     }
 </div>

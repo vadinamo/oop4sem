@@ -272,5 +272,40 @@ public class ClientController : Controller
     [Authorize]
     public IActionResult NewCredit()
     {
+        return View(new NewCreditModel
+        {
+            BankAccounts = ClientInfo().BankAccounts
+        });
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> NewCredit(NewCreditModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var client = ClientInfo();
+            var clientAccount = client.BankAccounts.Find(acc => acc.Id == model.AccountId);
+            var credit = new Credit
+            {
+                BankAccount = clientAccount,
+                DepositDate = DateTime.Today,
+                Money = model.Money,
+                Percent = model.Percent,
+                PenaltyPercent = 0,
+                MonthCount = model.Months,
+                PaidMonthCount = 0
+            };
+            clientAccount.Money += model.Money;
+            
+            client.Credits.Add(credit);
+            _context.Clients.Update(client);
+            _context.BankAccounts.Update(clientAccount);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ClientProfile", "Client");
+        }
+
+        return View(model);
     }
 }
