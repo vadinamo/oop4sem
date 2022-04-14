@@ -1,0 +1,44 @@
+@model lab1.Models.Operator.OperatorProfileModel
+
+<h1>Профиль</h1>
+
+<div>
+    <h>Роль: @Model.Operator.Role.Name</h> <br/>
+    <h>Фамилия: @Model.Operator.Surname</h> <br/>
+    <h>Имя: @Model.Operator.FirstName</h> <br/>
+    <h>Отчество: @Model.Operator.Patronymic</h> <br/>
+
+    <h>Почта: @Model.Operator.Email</h> <br/>
+    <h>Номер телефона: @Model.Operator.PhoneNumber</h> <br/>
+    <h>Банк: @Model.Operator.Bank.LegalName</h> <br/>
+    
+    <h2>История переводов:</h2>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>
+                Отправитель
+            </th>
+            <th>
+                Получатель
+            </th>
+            <th>
+                Количество денег
+            </th>
+            <th></th>
+        </tr>
+                
+        @foreach (var transfer in @Model.Operator.Transfers)
+        {
+            <tr>
+                <td>ID: @transfer.FromAccountId</td>
+                <td>ID: @transfer.ToAccountId</td>
+                <td>@transfer.TransferAmount</td>
+                <td>
+                    <a asp-action="TransferCancel" asp-controller="Operator" asp-route-id="@transfer.Id">Отменить</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

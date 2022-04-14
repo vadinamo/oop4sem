@@ -9,7 +9,6 @@ public class Credit
 
     public int Money { get; set; }
     public int Percent { get; set; }
-    public int PenaltyPercent { get; set; }
     public DateTime DepositDate { get; set; }
     public int MonthCount { get; set; }
     public int PaidMonthCount { get; set; }

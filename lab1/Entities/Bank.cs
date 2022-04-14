@@ -12,5 +12,4 @@ public class Bank
     public string? BankIdentificationNumber { get; set; }
     public string? LegalAddress { get; set; }
     public string? Type { get; set;  }
-    public List<Client>? Clients { get; set; }
 }

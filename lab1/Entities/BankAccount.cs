@@ -12,4 +12,6 @@ public class BankAccount
     public int? Money { get; set; }
     public Bank? Bank { get; set; }
     public Client? Client { get; set; }
+    public bool? IsBlocked { get; set; }
+    public bool? IsFrozen { get; set; }
 }

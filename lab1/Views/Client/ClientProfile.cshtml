@@ -134,7 +134,7 @@
         <form class="nav-link text-dark" asp-controller="Client" asp-action="NewCredit" method="get">
             <input type="submit" value="Взять кредит">
         </form>
-        @if (@Model.Client.BankDeposits.Count == 0)
+        @if (@Model.Client.Credits.Count == 0)
         {
             <h>Нет кредитов</h>
         }
@@ -161,7 +161,7 @@
                     <th>
                         Сумма кредита
                     </th>
-                    @* <th></th> *@
+                    <th></th>
                 </tr>
             
                 @foreach (var credit in @Model.Client.Credits)
@@ -173,9 +173,14 @@
                         <td>@credit.MonthCount</td>
                         <td>@credit.Percent</td>
                         <td>@credit.Money</td>
-                        @* <td> *@
-                        @*     <a asp-action="CloseBankDeposit" asp-controller="Client" asp-route-id="@deposit.Id">Закрыть счет</a> *@
-                        @* </td> *@
+                        @{ TimeSpan dateDifference = (DateTime.Today - credit.DepositDate).Duration();
+                        }
+                        @if ((DateTime.Today - credit.DepositDate).Days / 30 > credit.PaidMonthCount)
+                        {
+                            <td>
+                                <a asp-action="PayForCredit" asp-controller="Client" asp-route-id="@credit.Id">Выплатить кредит</a>
+                            </td>
+                        }
                     </tr>
                 }
                 </tbody>

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using lab1.DataBase;
 using lab1.Entities;
 using lab1.Entities.Roles;
@@ -110,7 +109,9 @@ public class ClientController : Controller
             {
                 Bank = await _context.Banks.FirstOrDefaultAsync(b => b.Id == model.BankId),
                 Money = model.Money,
-                Name = model.AccountName
+                Name = model.AccountName,
+                IsBlocked = false,
+                IsFrozen = false
             };
             
             client.BankAccounts?.Add(bankAccount);
@@ -142,12 +143,14 @@ public class ClientController : Controller
         if (ModelState.IsValid)
         {
             var toAccount = _context.BankAccounts.FirstOrDefaultAsync(b => b.Id.Equals(model.ToAccountId)).Result;
-            if (toAccount != null)
+            if (toAccount != null && toAccount.IsBlocked == false)
             {
                 var client = ClientInfo();
                 var clientAccount = client.BankAccounts.Find(acc => acc.Id == model.FromAccountId);
 
-                if (clientAccount.Money >= model.TransferAmount)
+                if (clientAccount.Money >= model.TransferAmount 
+                    && clientAccount.IsBlocked == false
+                    && clientAccount.IsFrozen == false)
                 {
                     clientAccount.Money -= model.TransferAmount;
                     toAccount.Money += model.TransferAmount;
@@ -155,6 +158,13 @@ public class ClientController : Controller
                     _context.Clients.Update(client);
                     _context.BankAccounts.Update(clientAccount);
                     _context.BankAccounts.Update(toAccount);
+                    _context.Transfers.Add(new Transfer
+                    {
+                        FromAccountId = model.FromAccountId,
+                        ToAccountId = model.ToAccountId,
+                        TransferAmount = model.TransferAmount,
+                        BankId = clientAccount.Bank.Id
+                    });
             
                     await _context.SaveChangesAsync();
                 }
@@ -184,6 +194,11 @@ public class ClientController : Controller
         {
             var client = ClientInfo();
             var clientAccount = client.BankAccounts.Find(acc => acc.Id == model.AccountId);
+            if (clientAccount.IsBlocked == true || clientAccount.IsFrozen == true)
+            {
+                return RedirectToAction("ClientProfile", "Client");
+            }
+            
             clientAccount.Money -= model.Money;
             var deposit = DateTime.Today;
             var withdraw = model.WithdrawDate;
@@ -223,9 +238,10 @@ public class ClientController : Controller
             var client = ClientInfo();
             var deposit = client.BankDeposits.Find(d => d.BankAccount.Id == id);
             var credit = client.Credits.Find(c => c.BankAccount.Id == id);
-            if (deposit == null && credit == null)
+            var account = client.BankAccounts.Find(a => a.Id == id);
+            if (deposit == null && credit == null && 
+                account.IsBlocked == false  && account.IsFrozen == false)
             {
-                var account = client.BankAccounts.Find(a => a.Id == id);
                 client.BankAccounts.Remove(account);
                 account = await _context.BankAccounts.FirstOrDefaultAsync(a => a.Id == id);
                 
@@ -257,12 +273,15 @@ public class ClientController : Controller
             int currentMoney = deposit.Money + (deposit.Money * (deposit.Percent) / 100 * months) / 12;
             
             var account = client.BankAccounts.Find(b => b.Id == deposit.BankAccount.Id);
-            account.Money += currentMoney;
-            client.BankDeposits.Remove(deposit);
+            if (account.IsBlocked == false)
+            {
+                account.Money += currentMoney;
+                client.BankDeposits.Remove(deposit);
             
-            _context.Clients.Update(client);
-            _context.BankAccounts.Update(account);
-            await _context.SaveChangesAsync();
+                _context.Clients.Update(client);
+                _context.BankAccounts.Update(account);
+                await _context.SaveChangesAsync();
+            }
         }
 
         return RedirectToAction("ClientProfile", "Client");
@@ -285,27 +304,61 @@ public class ClientController : Controller
         if (ModelState.IsValid)
         {
             var client = ClientInfo();
-            var clientAccount = client.BankAccounts.Find(acc => acc.Id == model.AccountId);
+            var account = client.BankAccounts.Find(acc => acc.Id == model.AccountId);
+            if (account.IsBlocked == true || account.IsFrozen == true)
+            {
+                return RedirectToAction("ClientProfile", "Client");
+            }
+            
             var credit = new Credit
             {
-                BankAccount = clientAccount,
+                BankAccount = account,
                 DepositDate = DateTime.Today,
                 Money = model.Money,
                 Percent = model.Percent,
-                PenaltyPercent = 0,
                 MonthCount = model.Months,
                 PaidMonthCount = 0
             };
-            clientAccount.Money += model.Money;
+            account.Money += model.Money;
             
             client.Credits.Add(credit);
             _context.Clients.Update(client);
-            _context.BankAccounts.Update(clientAccount);
+            _context.BankAccounts.Update(account);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("ClientProfile", "Client");
         }
 
         return View(model);
+    }
+
+    [Authorize]
+    public async Task<IActionResult> PayForCredit(int id)
+    {
+        if (ModelState.IsValid)
+        {
+            var client = ClientInfo();
+            var credit = client.Credits.Find(c => c.Id == id);
+
+            var account = credit.BankAccount;
+            if (account.IsBlocked == true || account.IsFrozen == true)
+            {
+                return RedirectToAction("ClientProfile", "Client");
+            }
+            
+            account.Money -= credit.Money * (100 + credit.Percent) / credit.MonthCount;
+            credit.PaidMonthCount++;
+
+            if (credit.MonthCount == credit.PaidMonthCount)
+            {
+                client.Credits.Remove(credit);
+            }
+            
+            _context.Clients.Update(client);
+            _context.BankAccounts.Update(account);
+            await _context.SaveChangesAsync();
+        }
+        
+        return RedirectToAction("ClientProfile", "Client");
     }
 }
