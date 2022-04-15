@@ -2,7 +2,14 @@
 
 <h1>Профиль</h1>
 
-<div>
+@if (!@Model.Client.isApproved)
+{
+    <h>Ожидается подтверждение регистрации</h>
+}
+
+else
+{
+    <div>
     <h>Роль: @Model.Client.Role.Name</h> <br/>
     <h>Фамилия: @Model.Client.Surname</h> <br/>
     <h>Имя: @Model.Client.FirstName</h> <br/>
@@ -261,3 +268,4 @@
             <h>Для взятия рассрочки необходимо открыть счет.</h>
         }
 </div>
+}

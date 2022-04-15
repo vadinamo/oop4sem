@@ -50,7 +50,9 @@ public class ClientController : Controller
                 BankAccounts = new List<BankAccount>(),
                 BankDeposits = new List<BankDeposit>(),
                 Credits = new List<Credit>(),
-                InstallmentPlans = new List<InstallmentPlan>()
+                InstallmentPlans = new List<InstallmentPlan>(),
+                
+                isApproved = false
             };
 
             if (client != null)

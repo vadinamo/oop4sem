@@ -12,6 +12,52 @@
     <h>Номер телефона: @Model.Manager.PhoneNumber</h> <br/>
     <h>Банк: @Model.Manager.Bank.LegalName</h> <br/>
     
+    <h2>Подтверждение регистрации:</h2>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>
+                Фамилия
+            </th>
+            <th>
+                Имя
+            </th>
+            <th>
+                Отчество
+            </th>
+            <th>
+                Номер телефона
+            </th>
+            <th>
+                Почта
+            </th>
+            <th>
+                Серия и номер паспорта
+            </th>
+            <th>
+                Идентификационный номер
+            </th>
+            <th></th>
+        </tr>
+                    
+        @foreach (var client in @Model.Manager.ClientsToApprove)
+        {
+            <tr>
+                <td>@client.Surname</td>
+                <td>@client.FirstName</td>
+                <td>@client.Patronymic</td>
+                <td>@client.PhoneNumber</td>
+                <td>@client.Email</td>
+                <td>@client.PassportSeriesAndNumber</td>
+                <td>@client.IdentificationNumber</td>
+                <td>
+                    <a asp-action="RegistrationApprove" asp-controller="Manager" asp-route-id="@client.Id">Подтвердить регистрацию</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
     <h2>История переводов:</h2>
     <table class="table">
         <tbody>

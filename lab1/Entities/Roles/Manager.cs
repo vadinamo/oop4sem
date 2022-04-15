@@ -8,4 +8,5 @@ public class Manager : User
     public Bank? Bank { get; set; }
     public List<Transfer>? Transfers { get; set; }
     public List<BankAccount>? BankAccounts { get; set; }
+    public List<Client>? ClientsToApprove { get; set; }
 }

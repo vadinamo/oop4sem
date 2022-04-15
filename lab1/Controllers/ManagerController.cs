@@ -47,8 +47,10 @@ public class ManagerController : Controller
                 Role = user.Role,
                 RoleId = user.RoleId,
                 Bank = _context.Banks.FirstOrDefaultAsync(b => b.Id == model.BankId).Result,
+                
                 Transfers = new List<Transfer>(),
-                BankAccounts = new List<BankAccount>()
+                BankAccounts = new List<BankAccount>(),
+                ClientsToApprove = new List<Client>()
             };
 
             if (manager != null)
@@ -70,6 +72,7 @@ public class ManagerController : Controller
             .Include(m => m.BankAccounts)
             .Include(m => m.Bank)
             .Include(m => m.Role)
+            .Include(m => m.ClientsToApprove)
             .FirstAsync(m => m.Email.Equals(User.Identity.Name)).Result;
         return manager;
     }
@@ -104,6 +107,16 @@ public class ManagerController : Controller
             if (currentAccount.Bank.Id == manager.Bank.Id)
             {
                 manager.BankAccounts.Add(currentAccount);
+            }
+        }
+
+        var clientsToApprove = _context.Clients.ToList();
+        manager.ClientsToApprove.Clear();
+        foreach (var client in clientsToApprove)
+        {
+            if (!client.isApproved)
+            {
+                manager.ClientsToApprove.Add(client);
             }
         }
         
@@ -170,7 +183,7 @@ public class ManagerController : Controller
     {
         if (ModelState.IsValid)
         {
-            var account = _context.BankAccounts.FirstOrDefault(c => c.Id == id);
+            var account = _context.BankAccounts.FirstOrDefault(a => a.Id == id);
             if (account.IsBlocked == true)
             {
                 account.IsBlocked = false;
@@ -180,6 +193,20 @@ public class ManagerController : Controller
                 account.IsBlocked = true;
             }
             _context.BankAccounts.Update(account);
+            await _context.SaveChangesAsync();
+        }
+        
+        return RedirectToAction("ManagerProfile", "Manager");
+    }
+
+    [Authorize]
+    public async Task<IActionResult> RegistrationApprove(int id)
+    {
+        if (ModelState.IsValid)
+        {
+            var client = _context.Clients.FirstOrDefault(c => c.Id == id);
+            client.isApproved = true;
+            _context.Clients.Update(client);
             await _context.SaveChangesAsync();
         }
         
