@@ -77,6 +77,7 @@ public class OperatorController : Controller
     {
         var bankOperator = OperatorInfo();
         var transfersList = _context.Transfers.ToList();
+        bankOperator.Transfers.Clear();
         foreach (var transfer in transfersList)
         {
             if (transfer.BankId == bankOperator.Bank.Id)

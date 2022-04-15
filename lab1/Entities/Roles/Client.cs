@@ -12,5 +12,6 @@ public class Client : User
     public List<BankDeposit>? BankDeposits { get; set; }
     public List<Credit>? Credits { get; set; }
     public List<InstallmentPlan> InstallmentPlans { get; set; }
+    public Company? Company { get; set; }
     public bool IsApproved { get; set; }
 }

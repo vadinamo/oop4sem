@@ -10,9 +10,11 @@ public class ApplicationContext : DbContext
     public DbSet<Client> Clients { get; set; }
     public DbSet<Operator> Operators { get; set; }
     public DbSet<Manager> Managers { get; set; }
-    
+
     public DbSet<Bank> Banks { get; set; }
     public DbSet<Role> Roles { get; set; }
+    public DbSet<Company> Companies { get; set; }
+
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<BankAccount> BankAccounts { get; set; }
     public DbSet<Credit> Credits { get; set; }
@@ -33,7 +35,7 @@ public class ApplicationContext : DbContext
         
         var firstBank = new Bank
         {
-            Id = 4,
+            Id = 5,
             LegalName = "AlphaBank",
             BankIdentificationNumber = "ALFABY2X",
             LegalAddress = "Ул. Сурганова, 43-47, Минск, Республика Беларусь",
@@ -42,7 +44,7 @@ public class ApplicationContext : DbContext
         
         var secondBank = new Bank
         {
-            Id = 5,
+            Id = 6,
             LegalName = "Sberbank",
             BankIdentificationNumber = "BPSBBY2X",
             LegalAddress = "бульвар Мулявина, 6, Минск, Республика Беларусь",
@@ -51,15 +53,46 @@ public class ApplicationContext : DbContext
         
         var thirdBank = new Bank
         {
-            Id = 6,
+            Id = 7,
             LegalName = "Tinkoff",
             BankIdentificationNumber = "44525974",
             LegalAddress = "1-й Волоколамс пр-д, 10, Москва, Российская Федерация",
             Type = "АО"
         };
+
+        var firstCompany = new Company
+        {
+            Id = 8,
+            BankId = firstBank.BankIdentificationNumber,
+            LegalAddress = "ул. Немига, 36, Минск, Республика Беларусь",
+            LegalName = "Лукойл Белоруссия",
+            PayerAccountNumber = 100126124,
+            Type = "ИООО"
+        };
+        
+        var secondCompany = new Company
+        {
+            Id = 9,
+            BankId = secondBank.BankIdentificationNumber,
+            LegalAddress = "набережная Софийская, 26/1, Москва, Российская Федерация",
+            LegalName = "Роснефть",
+            PayerAccountNumber = 190050244,
+            Type = "ПАО"
+        };
+        
+        var thirdCompany = new Company
+        {
+            Id = 10,
+            BankId = thirdBank.BankIdentificationNumber,
+            LegalAddress = "ул. Солнечная, 15/5, Краснодар, Российская Федерация",
+            LegalName = "Магнит",
+            PayerAccountNumber = 100074592,
+            Type = "ООО"
+        };
+
         /*
         var companySpecialistRole = new Role { Name = "companySpecialist", Id = 4 };
-        var adminRole = new Role { Name = "admin", Id = 5 };
+        
         */
         var roles = new List<Role>();
         roles.Add(userRole);
@@ -71,16 +104,23 @@ public class ApplicationContext : DbContext
         banks.Add(firstBank);
         banks.Add(secondBank);
         banks.Add(thirdBank);
+
+        var companies = new List<Company>();
+        companies.Add(firstCompany);
+        companies.Add(secondCompany);
+        companies.Add(thirdCompany);
         
         modelBuilder.Entity<Role>().HasData(roles);
         //User adminUser = new User { Id = 1, Email = "admin@gmail.com", Password = "adminpassword", RoleId = adminRole.Id };
         modelBuilder.Entity<Bank>().HasData(banks);
+        modelBuilder.Entity<Company>().HasData(companies);
 
         modelBuilder.Entity<Credit>().ToTable("Credits");
         modelBuilder.Entity<InstallmentPlan>().ToTable("InstallmentPlans");
         
         modelBuilder.Entity<BankAccount>().ToTable("BankAccounts");
         modelBuilder.Entity<Bank>().ToTable("Banks");
+        modelBuilder.Entity<Company>().ToTable("Companies");
         modelBuilder.Entity<User>().ToTable("Users");
         
         modelBuilder.Entity<Client>().ToTable("Clients");

@@ -99,6 +99,7 @@ public class ManagerController : Controller
     {
         var manager = ManagerInfo();
         var transfersList = _context.Transfers.ToList();
+        manager.Transfers.Clear();
         foreach (var transfer in transfersList)
         {
             if (transfer.BankId == manager.Bank.Id)

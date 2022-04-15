@@ -20,7 +20,10 @@ public class ClientController : Controller
     [Authorize]
     public IActionResult ClientRegistration()
     {
-        return View();
+        return View(new ClientRegistrationModel
+        {
+            Companies = _context.Companies.ToList()
+        });
     }
 
     [HttpPost]
@@ -46,6 +49,7 @@ public class ClientController : Controller
 
                 PassportSeriesAndNumber = model.PassportSeriesAndNumber,
                 IdentificationNumber = model.IdentificationNumber,
+                Company = _context.Companies.FirstOrDefault(c => c.Id == model.CompanyId),
                 
                 BankAccounts = new List<BankAccount>(),
                 BankDeposits = new List<BankDeposit>(),
@@ -79,6 +83,7 @@ public class ClientController : Controller
             .ThenInclude(c => c.BankAccount)
             .Include(c => c.InstallmentPlans)
             .ThenInclude(i => i.BankAccount)
+            .Include(c => c.Company)
             .FirstAsync(u => u.Email.Equals(User.Identity.Name)).Result;
         return client;
     }
