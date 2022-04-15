@@ -7,7 +7,7 @@ namespace lab1.Entities;
 [Table("BankAccounts")]
 public class BankAccount
 {
-    [Key]public int? Id { get; set; }
+    [Key]public int Id { get; set; }
     public string? Name { get; set; }
     public int? Money { get; set; }
     public Bank? Bank { get; set; }

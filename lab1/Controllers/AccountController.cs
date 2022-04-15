@@ -114,6 +114,7 @@ public class AccountController : Controller
         var user = _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(User.Identity.Name)).Result;
         var client = _context.Clients.FirstOrDefaultAsync(c => c.Email.Equals(User.Identity.Name)).Result;
         var bankOperator = _context.Operators.FirstOrDefaultAsync(c => c.Email.Equals(User.Identity.Name)).Result;
+        var manager = _context.Managers.FirstOrDefaultAsync(c => c.Email.Equals(User.Identity.Name)).Result;
         switch (user.RoleId)
         {
             case 1: //client role
@@ -139,7 +140,15 @@ public class AccountController : Controller
                 }
 
             case 3: //manager role
-                break;
+                if (manager == null)
+                {
+                    return RedirectToAction("ManagerRegistration", "Manager");
+                }
+
+                else
+                {
+                    return RedirectToAction("ManagerProfile", "Manager");
+                }
 
             case 4: //companySpecialist role
                 break;

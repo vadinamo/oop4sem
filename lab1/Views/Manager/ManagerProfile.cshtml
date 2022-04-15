@@ -1,0 +1,92 @@
+@model lab1.Models.Manager.ManagerProfileModel
+
+<h1>Профиль</h1>
+
+<div>
+    <h>Роль: @Model.Manager.Role.Name</h> <br/>
+    <h>Фамилия: @Model.Manager.Surname</h> <br/>
+    <h>Имя: @Model.Manager.FirstName</h> <br/>
+    <h>Отчество: @Model.Manager.Patronymic</h> <br/>
+
+    <h>Почта: @Model.Manager.Email</h> <br/>
+    <h>Номер телефона: @Model.Manager.PhoneNumber</h> <br/>
+    <h>Банк: @Model.Manager.Bank.LegalName</h> <br/>
+    
+    <h2>История переводов:</h2>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>
+                Отправитель
+            </th>
+            <th>
+                Получатель
+            </th>
+            <th>
+                Количество денег
+            </th>
+            <th></th>
+        </tr>
+                
+        @foreach (var transfer in @Model.Manager.Transfers)
+        {
+            <tr>
+                <td>ID: @transfer.FromAccountId</td>
+                <td>ID: @transfer.ToAccountId</td>
+                <td>@transfer.TransferAmount</td>
+                <td>
+                    <a asp-action="TransferCancel" asp-controller="Manager" asp-route-id="@transfer.Id">Отменить</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <h2>Счета пользователей:</h2>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Название
+            </th>
+            <th>
+                Почта клиента
+            </th>
+            <th>
+                Количество денег
+            </th>
+            <th>
+                Заморожен
+            </th>
+            <th>
+                Заблокирован
+            </th>
+            <th></th>
+        </tr>
+                    
+        @if (@Model.Manager.BankAccounts.Count != 0)
+        {
+            @foreach (var account in @Model.Manager.BankAccounts)
+            {
+                <tr>
+                    <td>@account.Id</td>
+                    <td>@account.Name</td>
+                    <td>@account.Client.Email</td>
+                    <td>@account.Money</td>
+                    <td>
+                        @account.IsFrozen
+                        <a asp-action="ChangeFreezeStatus" asp-controller="Manager" asp-route-id="@account.Id">Изменить</a>
+                    </td>
+                    <td>
+                        @account.IsBlocked
+                        <a asp-action="ChangeBlockStatus" asp-controller="Manager" asp-route-id="@account.Id">Изменить</a>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

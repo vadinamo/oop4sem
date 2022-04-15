@@ -9,6 +9,7 @@ public class ApplicationContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Client> Clients { get; set; }
     public DbSet<Operator> Operators { get; set; }
+    public DbSet<Manager> Managers { get; set; }
     public DbSet<Bank> Banks { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
@@ -24,6 +25,7 @@ public class ApplicationContext : DbContext
         var userRole = new Role { Name = "user", Id = 0 };
         var clientRole = new Role { Name = "client", Id = 1 };
         var operatorRole = new Role { Name = "operator", Id = 2 };
+        var managerRole = new Role { Name = "manager", Id = 3 };
         
         var firstBank = new Bank
         {
@@ -52,7 +54,6 @@ public class ApplicationContext : DbContext
             Type = "АО"
         };
         /*
-        var managerRole = new Role { Name = "manager", Id = 3 };
         var companySpecialistRole = new Role { Name = "companySpecialist", Id = 4 };
         var adminRole = new Role { Name = "admin", Id = 5 };
         */
@@ -60,6 +61,7 @@ public class ApplicationContext : DbContext
         roles.Add(userRole);
         roles.Add(clientRole);
         roles.Add(operatorRole);
+        roles.Add(managerRole);
         
         var banks = new List<Bank>();
         banks.Add(firstBank);
@@ -74,6 +76,7 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<User>().ToTable("Users");
         modelBuilder.Entity<Client>().ToTable("Clients");
         modelBuilder.Entity<Operator>().ToTable("Operators");
+        modelBuilder.Entity<Manager>().ToTable("Managers");
         modelBuilder.Entity<Transfer>().ToTable("Transfers");
         base.OnModelCreating(modelBuilder);
     }

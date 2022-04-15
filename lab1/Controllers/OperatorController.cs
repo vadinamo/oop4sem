@@ -46,7 +46,8 @@ public class OperatorController : Controller
                 PhoneNumber = user.PhoneNumber,
                 Role = user.Role,
                 RoleId = user.RoleId,
-                Bank = _context.Banks.FirstOrDefaultAsync(b => b.Id == model.BankId).Result
+                Bank = _context.Banks.FirstOrDefaultAsync(b => b.Id == model.BankId).Result,
+                Transfers = new List<Transfer>()
             };
 
             if (bankOperator != null)

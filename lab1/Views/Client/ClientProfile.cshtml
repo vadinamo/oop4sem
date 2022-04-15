@@ -54,7 +54,16 @@
                     <td>@account.Name</td>
                     <td>@account.Id</td>
                     <td>@account.Bank?.LegalName</td>
-                    <td>@account.Money</td>
+                    
+                        @if (@account.IsBlocked == false)
+                        {
+                            <td>@account.Money</td>
+                        }
+                        else
+                        {
+                            <td>Счет заблокирован</td>
+                        }
+                    
                     <td>
                          <a asp-action="CloseBankAccount" asp-controller="Client" asp-route-id="@account.Id">Закрыть счет</a>
                     </td>
