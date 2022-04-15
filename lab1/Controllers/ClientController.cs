@@ -49,7 +49,8 @@ public class ClientController : Controller
                 
                 BankAccounts = new List<BankAccount>(),
                 BankDeposits = new List<BankDeposit>(),
-                Credits = new List<Credit>()
+                Credits = new List<Credit>(),
+                InstallmentPlans = new List<InstallmentPlan>()
             };
 
             if (client != null)
@@ -74,6 +75,8 @@ public class ClientController : Controller
             .ThenInclude(b => b.BankAccount)
             .Include(c => c.Credits)
             .ThenInclude(c => c.BankAccount)
+            .Include(c => c.InstallmentPlans)
+            .ThenInclude(i => i.BankAccount)
             .FirstAsync(u => u.Email.Equals(User.Identity.Name)).Result;
         return client;
     }
@@ -238,8 +241,9 @@ public class ClientController : Controller
             var client = ClientInfo();
             var deposit = client.BankDeposits.Find(d => d.BankAccount.Id == id);
             var credit = client.Credits.Find(c => c.BankAccount.Id == id);
+            var instellmentPlan = client.InstallmentPlans.Find(i => i.BankAccount.Id == id);
             var account = client.BankAccounts.Find(a => a.Id == id);
-            if (deposit == null && credit == null && 
+            if (deposit == null && credit == null && instellmentPlan == null &&
                 account.IsBlocked == false  && account.IsFrozen == false)
             {
                 client.BankAccounts.Remove(account);
@@ -331,6 +335,50 @@ public class ClientController : Controller
 
         return View(model);
     }
+    
+    [HttpGet]
+    [Authorize]
+    public IActionResult NewInstallmentPlan()
+    {
+        return View(new NewInstallmentPlanModel
+        {
+            BankAccounts = ClientInfo().BankAccounts
+        });
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> NewInstallmentPlan(NewInstallmentPlanModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var client = ClientInfo();
+            var account = client.BankAccounts.Find(acc => acc.Id == model.AccountId);
+            if (account.IsBlocked == true || account.IsFrozen == true)
+            {
+                return RedirectToAction("ClientProfile", "Client");
+            }
+            
+            var installmentPlan = new InstallmentPlan
+            {
+                BankAccount = account,
+                DepositDate = DateTime.Today,
+                Money = model.Money,
+                MonthCount = model.Months,
+                PaidMonthCount = 0
+            };
+            account.Money += model.Money;
+            
+            client.InstallmentPlans.Add(installmentPlan);
+            _context.Clients.Update(client);
+            _context.BankAccounts.Update(account);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ClientProfile", "Client");
+        }
+
+        return View(model);
+    }
 
     [Authorize]
     public async Task<IActionResult> PayForCredit(int id)
@@ -352,6 +400,36 @@ public class ClientController : Controller
             if (credit.MonthCount == credit.PaidMonthCount)
             {
                 client.Credits.Remove(credit);
+            }
+            
+            _context.Clients.Update(client);
+            _context.BankAccounts.Update(account);
+            await _context.SaveChangesAsync();
+        }
+        
+        return RedirectToAction("ClientProfile", "Client");
+    }
+    
+    [Authorize]
+    public async Task<IActionResult> PayForInstallmentPlan(int id)
+    {
+        if (ModelState.IsValid)
+        {
+            var client = ClientInfo();
+            var installmentPlan = client.InstallmentPlans.Find(c => c.Id == id);
+
+            var account = installmentPlan.BankAccount;
+            if (account.IsBlocked == true || account.IsFrozen == true)
+            {
+                return RedirectToAction("ClientProfile", "Client");
+            }
+            
+            account.Money -= installmentPlan.Money / installmentPlan.MonthCount;
+            installmentPlan.PaidMonthCount++;
+
+            if (installmentPlan.MonthCount == installmentPlan.PaidMonthCount)
+            {
+                client.InstallmentPlans.Remove(installmentPlan);
             }
             
             _context.Clients.Update(client);

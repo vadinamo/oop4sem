@@ -200,4 +200,64 @@
     {
         <h>Для взятия кредита необходимо открыть счет.</h>
     }
+    
+    <h2>Рассрочки:</h2>
+        @if (@Model.Client.BankAccounts.Count != 0)
+        {
+            <form class="nav-link text-dark" asp-controller="Client" asp-action="NewInstallmentPlan" method="get">
+                <input type="submit" value="Взять рассрочку">
+            </form>
+            @if (@Model.Client.InstallmentPlans.Count == 0)
+            {
+                <h>Нет рассрочек</h>
+            }
+            else
+            {
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>
+                            Банк
+                        </th>
+                        <th>
+                            Счет
+                        </th>
+                        <th>
+                            Дата получения
+                        </th>
+                        <th>
+                            Количество месяцев
+                        </th>
+                        <th>
+                            Сумма рассрочки
+                        </th>
+                        <th></th>
+                    </tr>
+                
+                    @foreach (var installmentPlan in @Model.Client.InstallmentPlans)
+                    {
+                        <tr>
+                            <td>@installmentPlan.BankAccount.Bank?.LegalName</td>
+                            <td>@installmentPlan.BankAccount.Name</td>
+                            <td>@installmentPlan.DepositDate.ToLongDateString()</td>
+                            <td>@installmentPlan.MonthCount</td>
+                            <td>@installmentPlan.Money</td>
+                            @{ TimeSpan dateDifference = (DateTime.Today - installmentPlan.DepositDate).Duration();
+                            }
+                            @if ((DateTime.Today - installmentPlan.DepositDate).Days / 30 > installmentPlan.PaidMonthCount)
+                            {
+                                <td>
+                                    <a asp-action="PayForInstallmentPlan" asp-controller="Client" asp-route-id="@installmentPlan.Id">Выплатить кредит</a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+        }
+        else
+        {
+            <h>Для взятия рассрочки необходимо открыть счет.</h>
+        }
 </div>

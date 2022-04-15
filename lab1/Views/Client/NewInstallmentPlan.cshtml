@@ -1,8 +1,8 @@
-@model lab1.Models.Client.NewCreditModel
+@model lab1.Models.Client.NewInstallmentPlanModel
  
-<h2>Получение кредита</h2>
+<h2>Получение рассрочки</h2>
  
-<form asp-action="NewCredit" asp-controller="Client" asp-anti-forgery="true">
+<form asp-action="NewInstallmentPlan" asp-controller="Client" asp-anti-forgery="true">
     <div class="validation" asp-validation-summary="ModelOnly"></div>
     <div>
         <div class="input-group mb-3">
@@ -14,16 +14,10 @@
             </select>
         </div>
         <div>
-            <label asp-for="Money">Введите сумму кредита</label><br/>
+            <label asp-for="Money">Введите сумму рассрочки</label><br/>
             <input type="text" asp-for="Money"/>
             <span asp-validation-for="Money"/>
         </div>
-        <div>
-            <label asp-for="Percent">Введите процент кредита</label><br/>
-            <input type="text" asp-for="Percent"/>
-            <span asp-validation-for="Percent"/>
-        </div>
-        
         <div>
             <label asp-for="Months">Количество месяцев</label><br/>
             <input type="text" asp-for="Months"/>
