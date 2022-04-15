@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace lab1.Entities;
 
+[Table("InstallmentPlans")]
 public class InstallmentPlan
 {
     [Key] public int? Id { get; set; }
@@ -12,4 +13,5 @@ public class InstallmentPlan
     public DateTime DepositDate { get; set; }
     public int MonthCount { get; set; }
     public int PaidMonthCount { get; set; }
+    public bool IsApproved { get; set; }
 }

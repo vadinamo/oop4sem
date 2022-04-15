@@ -9,4 +9,6 @@ public class Manager : User
     public List<Transfer>? Transfers { get; set; }
     public List<BankAccount>? BankAccounts { get; set; }
     public List<Client>? ClientsToApprove { get; set; }
+    public List<Credit>? CreditsToApprove { get; set; }
+    public List<InstallmentPlan>? InstallmentPlansToApprove { get; set; }
 }

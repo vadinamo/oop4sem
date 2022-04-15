@@ -52,7 +52,7 @@ public class ClientController : Controller
                 Credits = new List<Credit>(),
                 InstallmentPlans = new List<InstallmentPlan>(),
                 
-                isApproved = false
+                IsApproved = false
             };
 
             if (client != null)
@@ -323,11 +323,12 @@ public class ClientController : Controller
                 Money = model.Money,
                 Percent = model.Percent,
                 MonthCount = model.Months,
-                PaidMonthCount = 0
+                PaidMonthCount = 0,
+                IsApproved = false
             };
-            account.Money += model.Money;
             
             client.Credits.Add(credit);
+            _context.Credits.Add(credit);
             _context.Clients.Update(client);
             _context.BankAccounts.Update(account);
             await _context.SaveChangesAsync();
@@ -367,11 +368,12 @@ public class ClientController : Controller
                 DepositDate = DateTime.Today,
                 Money = model.Money,
                 MonthCount = model.Months,
-                PaidMonthCount = 0
+                PaidMonthCount = 0,
+                IsApproved = false
             };
-            account.Money += model.Money;
             
             client.InstallmentPlans.Add(installmentPlan);
+            _context.InstallmentPlans.Add(installmentPlan);
             _context.Clients.Update(client);
             _context.BankAccounts.Update(account);
             await _context.SaveChangesAsync();

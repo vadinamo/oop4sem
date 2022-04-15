@@ -10,10 +10,14 @@ public class ApplicationContext : DbContext
     public DbSet<Client> Clients { get; set; }
     public DbSet<Operator> Operators { get; set; }
     public DbSet<Manager> Managers { get; set; }
+    
     public DbSet<Bank> Banks { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<BankAccount> BankAccounts { get; set; }
+    public DbSet<Credit> Credits { get; set; }
+    public DbSet<InstallmentPlan> InstallmentPlans { get; set; }
+
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
     {
@@ -71,9 +75,14 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<Role>().HasData(roles);
         //User adminUser = new User { Id = 1, Email = "admin@gmail.com", Password = "adminpassword", RoleId = adminRole.Id };
         modelBuilder.Entity<Bank>().HasData(banks);
+
+        modelBuilder.Entity<Credit>().ToTable("Credits");
+        modelBuilder.Entity<InstallmentPlan>().ToTable("InstallmentPlans");
+        
         modelBuilder.Entity<BankAccount>().ToTable("BankAccounts");
         modelBuilder.Entity<Bank>().ToTable("Banks");
         modelBuilder.Entity<User>().ToTable("Users");
+        
         modelBuilder.Entity<Client>().ToTable("Clients");
         modelBuilder.Entity<Operator>().ToTable("Operators");
         modelBuilder.Entity<Manager>().ToTable("Managers");

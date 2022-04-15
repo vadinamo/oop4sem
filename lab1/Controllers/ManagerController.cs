@@ -50,7 +50,9 @@ public class ManagerController : Controller
                 
                 Transfers = new List<Transfer>(),
                 BankAccounts = new List<BankAccount>(),
-                ClientsToApprove = new List<Client>()
+                ClientsToApprove = new List<Client>(),
+                CreditsToApprove = new List<Credit>(),
+                InstallmentPlansToApprove = new List<InstallmentPlan>()
             };
 
             if (manager != null)
@@ -73,6 +75,12 @@ public class ManagerController : Controller
             .Include(m => m.Bank)
             .Include(m => m.Role)
             .Include(m => m.ClientsToApprove)
+            .Include(m => m.CreditsToApprove)
+            .ThenInclude(c => c.BankAccount)
+            .ThenInclude(b => b.Bank)
+            .Include(m => m.InstallmentPlansToApprove)
+            .ThenInclude(i => i.BankAccount)
+            .ThenInclude(b => b.Bank)
             .FirstAsync(m => m.Email.Equals(User.Identity.Name)).Result;
         return manager;
     }
@@ -114,9 +122,29 @@ public class ManagerController : Controller
         manager.ClientsToApprove.Clear();
         foreach (var client in clientsToApprove)
         {
-            if (!client.isApproved)
+            if (!client.IsApproved)
             {
                 manager.ClientsToApprove.Add(client);
+            }
+        }
+
+        var creditsList = _context.Credits.ToList();
+        manager.CreditsToApprove.Clear();
+        foreach (var credit in creditsList)
+        {
+            if (credit.BankAccount.Bank.Id == manager.Bank.Id && !credit.IsApproved)
+            {
+                manager.CreditsToApprove.Add(credit);
+            }
+        }
+        
+        var installmentPlansList = _context.InstallmentPlans.ToList();
+        manager.InstallmentPlansToApprove.Clear();
+        foreach (var installmentPlan in installmentPlansList)
+        {
+            if (installmentPlan.BankAccount.Bank.Id == manager.Bank.Id && !installmentPlan.IsApproved)
+            {
+                manager.InstallmentPlansToApprove.Add(installmentPlan);
             }
         }
         
@@ -205,8 +233,64 @@ public class ManagerController : Controller
         if (ModelState.IsValid)
         {
             var client = _context.Clients.FirstOrDefault(c => c.Id == id);
-            client.isApproved = true;
+            client.IsApproved = true;
             _context.Clients.Update(client);
+            await _context.SaveChangesAsync();
+        }
+        
+        return RedirectToAction("ManagerProfile", "Manager");
+    }
+    
+    public Credit CreditInfo(int id)
+    {
+        var credit = _context.Credits
+            .Include(c => c.BankAccount)
+            .FirstAsync(a => a.Id == id).Result;
+        return credit;
+    }
+    
+    [Authorize]
+    public async Task<IActionResult> CreditApprove(int id)
+    {
+        if (ModelState.IsValid)
+        {
+            var credit = CreditInfo(id);
+            credit.IsApproved = true;
+            credit.DepositDate = DateTime.Today;
+
+            var account = credit.BankAccount;
+            account.Money += credit.Money;
+            
+            _context.Credits.Update(credit);
+            _context.BankAccounts.Update(account);
+            await _context.SaveChangesAsync();
+        }
+        
+        return RedirectToAction("ManagerProfile", "Manager");
+    }
+    
+    public InstallmentPlan InstallmentPlanInfo(int id)
+    {
+        var installmentPlan = _context.InstallmentPlans
+            .Include(c => c.BankAccount)
+            .FirstAsync(a => a.Id == id).Result;
+        return installmentPlan;
+    }
+    
+    [Authorize]
+    public async Task<IActionResult> InstallmentPlanApprove(int id)
+    {
+        if (ModelState.IsValid)
+        {
+            var installmentPlab = InstallmentPlanInfo(id);
+            installmentPlab.IsApproved = true;
+            installmentPlab.DepositDate = DateTime.Today;
+
+            var account = installmentPlab.BankAccount;
+            account.Money += installmentPlab.Money;
+            
+            _context.InstallmentPlans.Update(installmentPlab);
+            _context.BankAccounts.Update(account);
             await _context.SaveChangesAsync();
         }
         

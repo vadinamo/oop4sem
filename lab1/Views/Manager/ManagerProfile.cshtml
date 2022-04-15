@@ -135,4 +135,68 @@
         }
         </tbody>
     </table>
+    
+    <h2>Подтверждение кредитов:</h2>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>
+                Пользователь
+            </th>
+            <th>
+                Сумма
+            </th>
+            <th>
+                Процент
+            </th>
+            <th>
+                Количество месяцев
+            </th>
+            <th></th>
+        </tr>
+                    
+        @foreach (var credit in @Model.Manager.CreditsToApprove)
+        {
+            <tr>
+                <td>@credit.BankAccount.Client.Email</td>
+                <td>@credit.Money</td>
+                <td>@credit.Percent</td>
+                <td>@credit.MonthCount</td>
+                <td>
+                    <a asp-action="CreditApprove" asp-controller="Manager" asp-route-id="@credit.Id">Подтвердить</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <h2>Подтверждение рассрочек:</h2>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>
+                Пользователь
+            </th>
+            <th>
+                Сумма
+            </th>
+            <th>
+                Количество месяцев
+            </th>
+            <th></th>
+        </tr>
+                        
+        @foreach (var installmentPlan in @Model.Manager.InstallmentPlansToApprove)
+        {
+            <tr>
+                <td>@installmentPlan.BankAccount.Client.Email</td>
+                <td>@installmentPlan.Money</td>
+                <td>@installmentPlan.MonthCount</td>
+                <td>
+                    <a asp-action="InstallmentPlanApprove" asp-controller="Manager" asp-route-id="@installmentPlan.Id">Подтвердить</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>

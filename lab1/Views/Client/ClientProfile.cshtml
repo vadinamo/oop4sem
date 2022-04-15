@@ -2,7 +2,7 @@
 
 <h1>Профиль</h1>
 
-@if (!@Model.Client.isApproved)
+@if (!@Model.Client.IsApproved)
 {
     <h>Ожидается подтверждение регистрации</h>
 }
@@ -188,9 +188,16 @@ else
                         <td>@credit.DepositDate.ToLongDateString()</td>
                         <td>@credit.MonthCount</td>
                         <td>@credit.Percent</td>
-                        <td>@credit.Money</td>
-                        @{ TimeSpan dateDifference = (DateTime.Today - credit.DepositDate).Duration();
+                        @if (!credit.IsApproved)
+                        {
+                            <td>Ожидается подтверждение</td>
                         }
+                        else
+                        {
+                            <td>@credit.Money</td>
+                        }
+                        
+                        @{ TimeSpan dateDifference = (DateTime.Today - credit.DepositDate).Duration(); }
                         @if ((DateTime.Today - credit.DepositDate).Days / 30 > credit.PaidMonthCount)
                         {
                             <td>
@@ -248,7 +255,15 @@ else
                             <td>@installmentPlan.BankAccount.Name</td>
                             <td>@installmentPlan.DepositDate.ToLongDateString()</td>
                             <td>@installmentPlan.MonthCount</td>
-                            <td>@installmentPlan.Money</td>
+                            @if (!installmentPlan.IsApproved)
+                            {
+                                <td>Ожидается подтверждение</td>
+                            }
+                            else
+                            {
+                                <td>@installmentPlan.Money</td>
+                            }
+                           
                             @{ TimeSpan dateDifference = (DateTime.Today - installmentPlan.DepositDate).Duration();
                             }
                             @if ((DateTime.Today - installmentPlan.DepositDate).Days / 30 > installmentPlan.PaidMonthCount)
