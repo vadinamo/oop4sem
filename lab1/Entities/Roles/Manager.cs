@@ -11,4 +11,5 @@ public class Manager : User
     public List<Client>? ClientsToApprove { get; set; }
     public List<Credit>? CreditsToApprove { get; set; }
     public List<InstallmentPlan>? InstallmentPlansToApprove { get; set; }
+    public List<SalaryProject>? SalaryProjects { get; set; }
 }

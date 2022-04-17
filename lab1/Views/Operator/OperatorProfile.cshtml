@@ -41,4 +41,35 @@
         }
         </tbody>
     </table>
+
+    <h2>Зарплатные проекты</h2>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>
+                Почта
+            </th>
+            <th>
+                Номер счета
+            </th>
+            <th>
+                Зарплата
+            </th>
+            <th></th>
+        </tr>
+                
+        @foreach (var salaryProject in @Model.Operator.SalaryProjects)
+        {
+            <tr>
+                <td>@salaryProject.BankAccount.Client.Email</td>
+                <td>@salaryProject.BankAccount.Id</td>
+                <td>@salaryProject.Salary</td>
+                <td>
+                    <a asp-action="SalaryProjectApprove" asp-controller="Operator" asp-route-id="@salaryProject.Id">Принять</a>
+                    <a asp-action="SalaryProjectDecline" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Отклонить</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>

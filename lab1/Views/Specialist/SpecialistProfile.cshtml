@@ -11,8 +11,10 @@
     <h>Почта: @Model.Specialist.Email</h> <br/>
     <h>Номер телефона: @Model.Specialist.PhoneNumber</h> <br/>
     
-    <h>Компания: @Model.Specialist.Company.LegalName, @Model.Specialist.Company.LegalAddress</h>
+    <h>Компания: @Model.Specialist.Company.LegalName, @Model.Specialist.Company.LegalAddress</h> <br/>
+    <h>УНП: @Model.Specialist.Company.PayerAccountNumber</h>
     
+    <h2>Зарплатные проекты</h2>
     <table class="table">
         <tbody>
         <tr>
@@ -35,13 +37,17 @@
                 <td>@salaryProject.BankAccount.Id</td>
                 <td>@salaryProject.Salary</td>
                 <td>
-                    @if (@salaryProject.IsApproved == true)
+                    @if (@salaryProject.ApprovedByCompany == true && salaryProject.ApprovedByOperator == true)
                     {
                         <a asp-action="PaySalary" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Выплатить</a>
                     }
+                    else if (salaryProject.ApprovedByCompany != true)
+                    {
+                        <a asp-action="SalaryProjectApprove" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Подать документы</a>
+                    }
                     else
                     {
-                        <a asp-action="SalaryProjectApprove" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Подтвердить</a>
+                        <h>Проект находится на рассмотрении сотрудников банка</h>
                     }
                     <a asp-action="SalaryProjectDecline" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Отменить</a>
                 </td>

@@ -10,5 +10,6 @@ public class SalaryProject
     public int? Salary { get; set; }
     public BankAccount? BankAccount { get; set; }
     public Company? Company { get; set; }
-    public bool? IsApproved { get; set; }
+    public bool? ApprovedByCompany { get; set; }
+    public bool? ApprovedByOperator { get; set; }
 }

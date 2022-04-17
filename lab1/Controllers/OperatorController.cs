@@ -47,7 +47,9 @@ public class OperatorController : Controller
                 Role = user.Role,
                 RoleId = user.RoleId,
                 Bank = _context.Banks.FirstOrDefaultAsync(b => b.Id == model.BankId).Result,
-                Transfers = new List<Transfer>()
+                
+                Transfers = new List<Transfer>(),
+                SalaryProjects = new List<SalaryProject>()
             };
 
             if (bankOperator != null)
@@ -68,6 +70,7 @@ public class OperatorController : Controller
         var bankOperator = _context.Operators.Include(o => o.Transfers)
             .Include(o => o.Bank)
             .Include(o => o.Role)
+            .Include(o => o.SalaryProjects)
             .FirstAsync(o => o.Email.Equals(User.Identity.Name)).Result;
         return bankOperator;
     }
@@ -86,6 +89,21 @@ public class OperatorController : Controller
             }
         }
         
+        bankOperator.SalaryProjects.Clear();
+        var salaryProjects = _context.SalaryProjects
+            .Include(s => s.BankAccount)
+            .ThenInclude(a => a.Client)
+            .ToList();
+        foreach (var project in salaryProjects)
+        {
+            if (project.BankAccount.Bank == bankOperator.Bank 
+                && project.ApprovedByOperator == false
+                && project.ApprovedByCompany == true)
+            {
+                bankOperator.SalaryProjects.Add(project);
+            }
+        }
+
         _context.Operators.Update(bankOperator);
         await _context.SaveChangesAsync();
         
@@ -109,17 +127,36 @@ public class OperatorController : Controller
                 fromAccount.Money += transfer.TransferAmount;
                 toAccount.Money -= transfer.TransferAmount;
                 
-                var bankOperator = OperatorInfo();
-                bankOperator.Transfers.Remove(transfer);
-
                 _context.BankAccounts.Update(fromAccount);
                 _context.BankAccounts.Update(toAccount);
-                _context.Operators.Update(bankOperator);
                 _context.Transfers.Remove(transfer);
                 await _context.SaveChangesAsync();
             }
         }
 
-        return RedirectToAction("OperatorProfile", "Operator");
+        return RedirectToAction("Profile", "Account");
+    }
+    
+    public SalaryProject SalaryProjectInfo(int id)
+    {
+        var salaryProject = _context.SalaryProjects
+            .Include(p => p.BankAccount)
+            .FirstAsync(p => p.Id == id).Result;
+        
+        return salaryProject;
+    }
+    
+    [Authorize]
+    public async Task<IActionResult> SalaryProjectApprove(int id)
+    {
+        if (ModelState.IsValid)
+        {
+            var salaryProject = SalaryProjectInfo(id);
+            salaryProject.ApprovedByOperator = true;
+            _context.SalaryProjects.Update(salaryProject);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction("Profile", "Account");
     }
 }

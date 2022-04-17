@@ -114,7 +114,7 @@ public class SpecialistController : Controller
         if (ModelState.IsValid)
         {
             var salaryProject = SalaryProjectInfo(id);
-            salaryProject.IsApproved = true;
+            salaryProject.ApprovedByCompany = true;
             _context.SalaryProjects.Update(salaryProject);
             await _context.SaveChangesAsync();
         }

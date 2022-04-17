@@ -52,7 +52,8 @@ public class ManagerController : Controller
                 BankAccounts = new List<BankAccount>(),
                 ClientsToApprove = new List<Client>(),
                 CreditsToApprove = new List<Credit>(),
-                InstallmentPlansToApprove = new List<InstallmentPlan>()
+                InstallmentPlansToApprove = new List<InstallmentPlan>(),
+                SalaryProjects = new List<SalaryProject>()
             };
 
             if (manager != null)
@@ -81,6 +82,7 @@ public class ManagerController : Controller
             .Include(m => m.InstallmentPlansToApprove)
             .ThenInclude(i => i.BankAccount)
             .ThenInclude(b => b.Bank)
+            .Include(o => o.SalaryProjects)
             .FirstAsync(m => m.Email.Equals(User.Identity.Name)).Result;
         return manager;
     }
@@ -149,6 +151,21 @@ public class ManagerController : Controller
             }
         }
         
+        manager.SalaryProjects.Clear();
+        var salaryProjects = _context.SalaryProjects
+            .Include(s => s.BankAccount)
+            .ThenInclude(a => a.Client)
+            .ToList();
+        foreach (var project in salaryProjects)
+        {
+            if (project.BankAccount.Bank == manager.Bank 
+                && project.ApprovedByOperator == false
+                && project.ApprovedByCompany == true)
+            {
+                manager.SalaryProjects.Add(project);
+            }
+        }
+        
         _context.Managers.Update(manager);
         await _context.SaveChangesAsync();
         
@@ -156,34 +173,6 @@ public class ManagerController : Controller
         {
             Manager = manager
         });
-    }
-
-    [Authorize]
-    public async Task<IActionResult> TransferCancel(int id)
-    {
-        if (ModelState.IsValid)
-        {
-            var transfer = _context.Transfers.FirstOrDefault(t => t.Id == id);
-            var fromAccount = _context.BankAccounts.FirstOrDefault(c => c.Id == transfer.FromAccountId);
-            var toAccount = _context.BankAccounts.FirstOrDefault(c => c.Id == transfer.ToAccountId);
-
-            if (toAccount.Money >= transfer.TransferAmount)
-            {
-                fromAccount.Money += transfer.TransferAmount;
-                toAccount.Money -= transfer.TransferAmount;
-                
-                var manager = ManagerInfo();
-                manager.Transfers.Remove(transfer);
-
-                _context.BankAccounts.Update(fromAccount);
-                _context.BankAccounts.Update(toAccount);
-                _context.Managers.Update(manager);
-                _context.Transfers.Remove(transfer);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        return RedirectToAction("ManagerProfile", "Manager");
     }
 
     [Authorize]

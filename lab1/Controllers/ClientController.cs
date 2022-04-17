@@ -488,7 +488,8 @@ public class ClientController : Controller
             {
                 BankAccount = account,
                 Company = ClientInfo().Company,
-                IsApproved = false,
+                ApprovedByCompany = false,
+                ApprovedByOperator = false,
                 Salary = model.Salary
             };
             
