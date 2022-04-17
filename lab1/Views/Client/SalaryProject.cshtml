@@ -1,0 +1,32 @@
+@model lab1.Models.Client.SalaryProjectModel
+ 
+<h2>Зарплатный проект</h2>
+ 
+<form asp-action="SalaryProject" asp-controller="Client" asp-anti-forgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div class="input-group mb-3">
+            <select class="custom-select" id="inputGroupSelect01" asp-for="@Model!.AccountId">
+                @foreach (var acc in Model.BankAccounts)
+                {
+                    <option value="@acc.Id">@acc.Bank?.LegalName, @acc.Name : @acc.Money</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label asp-for="Salary">Введите зарплату</label><br/>
+            <input type="text" asp-for="Salary"/>
+            <span asp-validation-for="Salary"/>
+        </div>
+        
+        <div>
+            <input type="submit" value="Отправить заявку"/>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+ 
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

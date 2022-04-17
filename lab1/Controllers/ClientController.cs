@@ -120,8 +120,10 @@ public class ClientController : Controller
                 Bank = await _context.Banks.FirstOrDefaultAsync(b => b.Id == model.BankId),
                 Money = model.Money,
                 Name = model.AccountName,
+                
                 IsBlocked = false,
-                IsFrozen = false
+                IsFrozen = false,
+                IsSalary = false
             };
             
             client.BankAccounts?.Add(bankAccount);
@@ -447,5 +449,57 @@ public class ClientController : Controller
         }
         
         return RedirectToAction("ClientProfile", "Client");
+    }
+    
+    [HttpGet]
+    [Authorize]
+    public IActionResult SalaryProject()
+    {
+        var bankAccounts = ClientInfo().BankAccounts;
+        List<BankAccount> notSalary = new List<BankAccount>();
+        
+        foreach (var bankAccount in bankAccounts)
+        {
+            if (bankAccount.IsSalary == false)
+            {
+                notSalary.Add(bankAccount);
+            }
+        }
+
+        if (notSalary.Count == 0)
+        {
+            return RedirectToAction("ClientProfile", "Client");
+        }
+        
+        return View(new SalaryProjectModel()
+        {
+            BankAccounts = notSalary
+        });
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> SalaryProject(SalaryProjectModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var account = _context.BankAccounts.FirstOrDefault(a => a.Id == model.AccountId);
+            var salaryProject = new SalaryProject
+            {
+                BankAccount = account,
+                Company = ClientInfo().Company,
+                IsApproved = false,
+                Salary = model.Salary
+            };
+            
+            account.IsSalary = true;
+            _context.BankAccounts.Update(account);
+            _context.SalaryProjects.Add(salaryProject);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction("ClientProfile", "Client");
+        }
+
+        return View(model);
     }
 }

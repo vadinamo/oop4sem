@@ -1,0 +1,52 @@
+@model lab1.Models.Specialist.SpecialistProfileModel
+
+<h1>Профиль</h1>
+
+<div>
+    <h>Роль: @Model.Specialist.Role.Name</h> <br/>
+    <h>Фамилия: @Model.Specialist.Surname</h> <br/>
+    <h>Имя: @Model.Specialist.FirstName</h> <br/>
+    <h>Отчество: @Model.Specialist.Patronymic</h> <br/>
+
+    <h>Почта: @Model.Specialist.Email</h> <br/>
+    <h>Номер телефона: @Model.Specialist.PhoneNumber</h> <br/>
+    
+    <h>Компания: @Model.Specialist.Company.LegalName, @Model.Specialist.Company.LegalAddress</h>
+    
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>
+                Почта
+            </th>
+            <th>
+                Номер счета
+            </th>
+            <th>
+                Зарплата
+            </th>
+            <th></th>
+        </tr>
+            
+        @foreach (var salaryProject in @Model.Specialist.SalaryProjects)
+        {
+            <tr>
+                <td>@salaryProject.BankAccount.Client.Email</td>
+                <td>@salaryProject.BankAccount.Id</td>
+                <td>@salaryProject.Salary</td>
+                <td>
+                    @if (@salaryProject.IsApproved == true)
+                    {
+                        <a asp-action="PaySalary" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Выплатить</a>
+                    }
+                    else
+                    {
+                        <a asp-action="SalaryProjectApprove" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Подтвердить</a>
+                    }
+                    <a asp-action="SalaryProjectDecline" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Отменить</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

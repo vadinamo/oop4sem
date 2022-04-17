@@ -1,8 +1,8 @@
-@model lab1.Models.Client.ClientRegistrationModel
+@model lab1.Models.Specialist.SpecialistRegistrationModel
  
 <h2>Регистрация</h2>
  
-<form asp-action="ClientRegistration" asp-controller="Client" asp-anti-forgery="true">
+<form asp-action="SpecialistRegistration" asp-controller="Specialist" asp-anti-forgery="true">
     <div class="validation" asp-validation-summary="ModelOnly"></div>
     <div>
         <h>Компания</h>
@@ -13,16 +13,6 @@
                     <option value="@company.Id"> БИК: @company.BankId, Название: @company.LegalName</option>
                 }
             </select>
-        </div>
-        <div>
-            <label asp-for="PassportSeriesAndNumber">Введите серию и номер паспорта</label><br/>
-            <input type="text" asp-for="PassportSeriesAndNumber"/>
-            <span asp-validation-for="PassportSeriesAndNumber"/>
-        </div>
-        <div>
-            <label asp-for="IdentificationNumber">Введите идентификационный номер паспорта</label><br/>
-            <input type="text" asp-for="IdentificationNumber"/>
-            <span asp-validation-for="IdentificationNumber"/>
         </div>
         <div>
             <input type="submit" value="Подтвердить"/>

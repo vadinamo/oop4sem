@@ -12,5 +12,5 @@ public class Company
     public int? PayerAccountNumber { get; set; }
     public string? Type { get; set; }
     public string? LegalAddress { get; set; }
-    public string BankId { get; set; }
+    public string? BankId { get; set; }
 }

@@ -10,6 +10,7 @@ public class ApplicationContext : DbContext
     public DbSet<Client> Clients { get; set; }
     public DbSet<Operator> Operators { get; set; }
     public DbSet<Manager> Managers { get; set; }
+    public DbSet<Specialist> Specialists { get; set; }
 
     public DbSet<Bank> Banks { get; set; }
     public DbSet<Role> Roles { get; set; }
@@ -19,6 +20,7 @@ public class ApplicationContext : DbContext
     public DbSet<BankAccount> BankAccounts { get; set; }
     public DbSet<Credit> Credits { get; set; }
     public DbSet<InstallmentPlan> InstallmentPlans { get; set; }
+    public DbSet<SalaryProject> SalaryProjects { get; set; }
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
@@ -32,6 +34,7 @@ public class ApplicationContext : DbContext
         var clientRole = new Role { Name = "client", Id = 1 };
         var operatorRole = new Role { Name = "operator", Id = 2 };
         var managerRole = new Role { Name = "manager", Id = 3 };
+        var specialistRole = new Role { Name = "specialist", Id = 4 };
         
         var firstBank = new Bank
         {
@@ -90,15 +93,12 @@ public class ApplicationContext : DbContext
             Type = "ООО"
         };
 
-        /*
-        var companySpecialistRole = new Role { Name = "companySpecialist", Id = 4 };
-        
-        */
         var roles = new List<Role>();
         roles.Add(userRole);
         roles.Add(clientRole);
         roles.Add(operatorRole);
         roles.Add(managerRole);
+        roles.Add(specialistRole);
         
         var banks = new List<Bank>();
         banks.Add(firstBank);
@@ -111,12 +111,12 @@ public class ApplicationContext : DbContext
         companies.Add(thirdCompany);
         
         modelBuilder.Entity<Role>().HasData(roles);
-        //User adminUser = new User { Id = 1, Email = "admin@gmail.com", Password = "adminpassword", RoleId = adminRole.Id };
         modelBuilder.Entity<Bank>().HasData(banks);
         modelBuilder.Entity<Company>().HasData(companies);
 
         modelBuilder.Entity<Credit>().ToTable("Credits");
         modelBuilder.Entity<InstallmentPlan>().ToTable("InstallmentPlans");
+        modelBuilder.Entity<SalaryProject>().ToTable("SalaryProjects");
         
         modelBuilder.Entity<BankAccount>().ToTable("BankAccounts");
         modelBuilder.Entity<Bank>().ToTable("Banks");
@@ -126,6 +126,7 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<Client>().ToTable("Clients");
         modelBuilder.Entity<Operator>().ToTable("Operators");
         modelBuilder.Entity<Manager>().ToTable("Managers");
+        modelBuilder.Entity<Specialist>().ToTable("Specialists");
         modelBuilder.Entity<Transfer>().ToTable("Transfers");
         base.OnModelCreating(modelBuilder);
     }

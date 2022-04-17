@@ -9,9 +9,12 @@ public class BankAccount
 {
     [Key]public int Id { get; set; }
     public string? Name { get; set; }
+    
     public int? Money { get; set; }
     public Bank? Bank { get; set; }
     public Client? Client { get; set; }
+    
     public bool? IsBlocked { get; set; }
     public bool? IsFrozen { get; set; }
+    public bool? IsSalary { get; set; }
 }

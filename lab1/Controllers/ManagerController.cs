@@ -269,7 +269,7 @@ public class ManagerController : Controller
         
         return RedirectToAction("ManagerProfile", "Manager");
     }
-    
+
     public InstallmentPlan InstallmentPlanInfo(int id)
     {
         var installmentPlan = _context.InstallmentPlans

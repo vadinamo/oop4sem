@@ -35,6 +35,10 @@ else
     }
     else
     {
+        <form class="nav-link text-dark" asp-controller="Client" asp-action="SalaryProject" method="get">
+            <input type="submit" value="Подать заявку на зарплатный проект">
+        </form>
+        
         <form class="nav-link text-dark" asp-controller="Client" asp-action="BankTransfer" method="get">
             <input type="submit" value="Перевод">
         </form>
@@ -282,7 +286,7 @@ else
         }
         else
         {
-            <h>Для взятия рассрочки необходимо открыть счет.</h>
+            <h>Для получения рассрочки необходимо открыть счет.</h>
         }
 </div>
 }
