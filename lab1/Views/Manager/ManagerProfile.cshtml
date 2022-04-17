@@ -202,32 +202,64 @@
     
     <h2>Зарплатные проекты</h2>
     <table class="table">
-    <tbody>
-    <tr>
-        <th>
-            Почта
-        </th>
-        <th>
-            Номер счета
-        </th>
-        <th>
-            Зарплата
-        </th>
-        <th></th>
-    </tr>
-                    
-    @foreach (var salaryProject in @Model.Manager.SalaryProjects)
-    {
+        <tbody>
         <tr>
-            <td>@salaryProject.BankAccount.Client.Email</td>
-            <td>@salaryProject.BankAccount.Id</td>
-            <td>@salaryProject.Salary</td>
-            <td>
-                <a asp-action="SalaryProjectApprove" asp-controller="Operator" asp-route-id="@salaryProject.Id">Принять</a>
-                <a asp-action="SalaryProjectDecline" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Отклонить</a>
-            </td>
+            <th>
+                Почта
+            </th>
+            <th>
+                Номер счета
+            </th>
+            <th>
+                Зарплата
+            </th>
+            <th></th>
         </tr>
-    }
-    </tbody>
-</table>
+                        
+        @foreach (var salaryProject in @Model.Manager.SalaryProjects)
+        {
+            <tr>
+                <td>@salaryProject.BankAccount.Client.Email</td>
+                <td>@salaryProject.BankAccount.Id</td>
+                <td>@salaryProject.Salary</td>
+                <td>
+                    <a asp-action="SalaryProjectApprove" asp-controller="Operator" asp-route-id="@salaryProject.Id">Принять</a>
+                    <a asp-action="SalaryProjectDecline" asp-controller="Specialist" asp-route-id="@salaryProject.Id">Отклонить</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <h2>Запросы на переводы зарплат</h2>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>
+                    Название компании
+                </th>
+                <th>
+                    Номер счета
+                </th>
+                <th>
+                    Зарплата
+                </th>
+                <th></th>
+            </tr>
+                            
+            @foreach (var salaryTransfer in @Model.Manager.SalaryTransfers)
+            {
+                <tr>
+                    <td>@salaryTransfer.CompanyName</td>
+                    <td>@salaryTransfer.ToAccountId</td>
+                    <td>@salaryTransfer.TransferAmount</td>
+                    <td>
+                    <td>
+                        <a asp-action="SalaryTransferApprove" asp-controller="Manager" asp-route-id="@salaryTransfer.Id">Принять</a>
+                        <a asp-action="SalaryTransferDecline" asp-controller="Manager" asp-route-id="@salaryTransfer.Id">Отклонить</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
 </div>

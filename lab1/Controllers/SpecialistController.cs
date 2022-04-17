@@ -104,6 +104,8 @@ public class SpecialistController : Controller
     {
         var salaryProject = _context.SalaryProjects
             .Include(p => p.BankAccount)
+            .ThenInclude(a => a.Bank)
+            .Include(p => p.Company)
             .FirstAsync(p => p.Id == id).Result;
         return salaryProject;
     }
@@ -143,9 +145,17 @@ public class SpecialistController : Controller
         if (ModelState.IsValid)
         {
             var salaryProject = SalaryProjectInfo(id);
-            salaryProject.BankAccount.Money += salaryProject.Salary;
-            
-            _context.Update(salaryProject);
+
+            var salaryTransfer = new SalaryTransfer
+            {
+                BankId = salaryProject.BankAccount.Bank.Id,
+                CompanyName = salaryProject.Company.LegalName,
+                IsApproved = false,
+                ToAccountId = salaryProject.BankAccount.Id,
+                TransferAmount = salaryProject.Salary
+            };
+
+            _context.SalaryTransfers.Add(salaryTransfer);
             await _context.SaveChangesAsync();
         }
 

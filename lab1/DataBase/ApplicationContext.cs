@@ -17,6 +17,7 @@ public class ApplicationContext : DbContext
     public DbSet<Company> Companies { get; set; }
 
     public DbSet<Transfer> Transfers { get; set; }
+    public DbSet<SalaryTransfer> SalaryTransfers { get; set; }
     public DbSet<BankAccount> BankAccounts { get; set; }
     public DbSet<Credit> Credits { get; set; }
     public DbSet<InstallmentPlan> InstallmentPlans { get; set; }
@@ -128,6 +129,7 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<Manager>().ToTable("Managers");
         modelBuilder.Entity<Specialist>().ToTable("Specialists");
         modelBuilder.Entity<Transfer>().ToTable("Transfers");
+        modelBuilder.Entity<SalaryTransfer>().ToTable("SalaryTransfers");
         base.OnModelCreating(modelBuilder);
     }
 }

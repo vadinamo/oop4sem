@@ -53,7 +53,8 @@ public class ManagerController : Controller
                 ClientsToApprove = new List<Client>(),
                 CreditsToApprove = new List<Credit>(),
                 InstallmentPlansToApprove = new List<InstallmentPlan>(),
-                SalaryProjects = new List<SalaryProject>()
+                SalaryProjects = new List<SalaryProject>(),
+                SalaryTransfers = new List<SalaryTransfer>()
             };
 
             if (manager != null)
@@ -62,7 +63,7 @@ public class ManagerController : Controller
                 _context.Managers.Add(manager);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("ManagerProfile", "Manager");
+                return RedirectToAction("Profile", "Account");
             }
         }
         
@@ -72,6 +73,7 @@ public class ManagerController : Controller
     public Manager ManagerInfo()
     {
         var manager = _context.Managers.Include(m => m.Transfers)
+            .Include(m => m.SalaryTransfers)
             .Include(m => m.BankAccounts)
             .Include(m => m.Bank)
             .Include(m => m.Role)
@@ -107,6 +109,16 @@ public class ManagerController : Controller
             if (transfer.BankId == manager.Bank.Id)
             {
                 manager.Transfers.Add(transfer);
+            }
+        }
+
+        var salaryTransfersList = _context.SalaryTransfers.ToList();
+        manager.SalaryTransfers.Clear();
+        foreach (var transfer in salaryTransfersList)
+        {
+            if (transfer.BankId == manager.Bank.Id && transfer.IsApproved == false)
+            {
+                manager.SalaryTransfers.Add(transfer);
             }
         }
         
@@ -193,7 +205,7 @@ public class ManagerController : Controller
             await _context.SaveChangesAsync();
         }
         
-        return RedirectToAction("ManagerProfile", "Manager");
+        return RedirectToAction("Profile", "Account");
     }
     
     [Authorize]
@@ -214,7 +226,7 @@ public class ManagerController : Controller
             await _context.SaveChangesAsync();
         }
         
-        return RedirectToAction("ManagerProfile", "Manager");
+        return RedirectToAction("Profile", "Account");
     }
 
     [Authorize]
@@ -228,7 +240,7 @@ public class ManagerController : Controller
             await _context.SaveChangesAsync();
         }
         
-        return RedirectToAction("ManagerProfile", "Manager");
+        return RedirectToAction("Profile", "Account");
     }
     
     public Credit CreditInfo(int id)
@@ -256,7 +268,7 @@ public class ManagerController : Controller
             await _context.SaveChangesAsync();
         }
         
-        return RedirectToAction("ManagerProfile", "Manager");
+        return RedirectToAction("Profile", "Account");
     }
 
     public InstallmentPlan InstallmentPlanInfo(int id)
@@ -284,6 +296,34 @@ public class ManagerController : Controller
             await _context.SaveChangesAsync();
         }
         
-        return RedirectToAction("ManagerProfile", "Manager");
+        return RedirectToAction("Profile", "Account");
+    }
+    
+    [Authorize]
+    public async Task<IActionResult> SalaryTransferApprove(int id)
+    {
+        if (ModelState.IsValid)
+        {
+            var transfer = _context.SalaryTransfers.FirstOrDefault(t => t.Id == id);
+            transfer.IsApproved = true;
+            
+            var account = _context.BankAccounts.FirstOrDefault(a => a.Id == transfer.ToAccountId);
+            account.Money += transfer.TransferAmount;
+
+            _context.BankAccounts.Update(account);
+            _context.SalaryTransfers.Update(transfer);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction("Profile", "Account");
+    }
+
+    [Authorize]
+    public async Task<IActionResult> SalaryTransferDecline(int id)
+    {
+        var transfer = _context.SalaryTransfers.FirstOrDefault(t => t.Id == id);
+        _context.SalaryTransfers.Remove(transfer);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Profile", "Account");
     }
 }

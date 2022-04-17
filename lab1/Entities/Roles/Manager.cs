@@ -12,4 +12,5 @@ public class Manager : User
     public List<Credit>? CreditsToApprove { get; set; }
     public List<InstallmentPlan>? InstallmentPlansToApprove { get; set; }
     public List<SalaryProject>? SalaryProjects { get; set; }
+    public List<SalaryTransfer>? SalaryTransfers { get; set; }
 }
