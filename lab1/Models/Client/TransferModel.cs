@@ -15,6 +15,7 @@ public class TransferModel
     
     [Required(ErrorMessage = "Не указана сумма перевода")]
     [DataType(DataType.Text)]
+    [Range(0,int.MaxValue,ErrorMessage="Неверная сумма перевода")]
     public int TransferAmount { get; set; }
     public List<BankAccount>? ClientAccounts { get; set; }
 }

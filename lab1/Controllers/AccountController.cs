@@ -59,7 +59,9 @@ public class AccountController : Controller
                 return RedirectToAction("Profile", "Account");
             }
             else
-                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            {
+                return RedirectToAction("Register", "Account");
+            }
         }
         return View(model);
     }

@@ -85,6 +85,22 @@
                 </td>
             </tr>
         }
+        
+        @foreach (var salaryTransfer in @Model.Manager.SalaryTransfers)
+        {
+            if (salaryTransfer.IsApproved == true)
+            {
+                <tr>
+                    <td>@salaryTransfer.CompanyName</td>
+                    <td>@salaryTransfer.ToAccountId</td>
+                    <td>@salaryTransfer.TransferAmount</td>
+                    <td>
+                    <td>
+                        <a asp-action="SalaryTransferCancel" asp-controller="Manager" asp-route-id="@salaryTransfer.Id">Отменить</a>
+                    </td>
+                </tr>
+            }
+        }
         </tbody>
     </table>
     
@@ -249,16 +265,19 @@
                             
             @foreach (var salaryTransfer in @Model.Manager.SalaryTransfers)
             {
-                <tr>
-                    <td>@salaryTransfer.CompanyName</td>
-                    <td>@salaryTransfer.ToAccountId</td>
-                    <td>@salaryTransfer.TransferAmount</td>
-                    <td>
-                    <td>
-                        <a asp-action="SalaryTransferApprove" asp-controller="Manager" asp-route-id="@salaryTransfer.Id">Принять</a>
-                        <a asp-action="SalaryTransferDecline" asp-controller="Manager" asp-route-id="@salaryTransfer.Id">Отклонить</a>
-                    </td>
-                </tr>
+                if (salaryTransfer.IsApproved == false)
+                {
+                    <tr>
+                        <td>@salaryTransfer.CompanyName</td>
+                        <td>@salaryTransfer.ToAccountId</td>
+                        <td>@salaryTransfer.TransferAmount</td>
+                        <td>
+                        <td>
+                            <a asp-action="SalaryTransferApprove" asp-controller="Manager" asp-route-id="@salaryTransfer.Id">Принять</a>
+                            <a asp-action="SalaryTransferDecline" asp-controller="Manager" asp-route-id="@salaryTransfer.Id">Отклонить</a>
+                        </td>
+                    </tr>
+                }
             }
             </tbody>
         </table>

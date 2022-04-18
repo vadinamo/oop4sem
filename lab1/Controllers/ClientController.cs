@@ -180,9 +180,8 @@ public class ClientController : Controller
             
                     await _context.SaveChangesAsync();
                 }
-                
-                return RedirectToAction("ClientProfile", "Client");
             }
+            return RedirectToAction("Profile", "Account");
         }
         
         return View(model);
@@ -209,6 +208,11 @@ public class ClientController : Controller
             if (clientAccount.IsBlocked == true || clientAccount.IsFrozen == true)
             {
                 return RedirectToAction("ClientProfile", "Client");
+            }
+
+            if (clientAccount.Money < model.Money)
+            {
+                return RedirectToAction("Profile", "Account");
             }
             
             clientAccount.Money -= model.Money;

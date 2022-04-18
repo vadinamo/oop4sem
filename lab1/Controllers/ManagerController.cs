@@ -32,10 +32,10 @@ public class ManagerController : Controller
     {
         if (ModelState.IsValid)
         {
-            var user = _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(User.Identity.Name)).Result;
+            var user = _context.Users.FirstOrDefaultAsync(u => u.Email!.Equals(User.Identity!.Name)).Result;
             var manager = new Manager
             {
-                Id = user.Id,
+                Id = user!.Id,
                 Email = user.Email,
                 Password = user.Password,
 
@@ -57,14 +57,11 @@ public class ManagerController : Controller
                 SalaryTransfers = new List<SalaryTransfer>()
             };
 
-            if (manager != null)
-            {
-                _context.Users.Remove(user);
-                _context.Managers.Add(manager);
-                await _context.SaveChangesAsync();
+            _context.Users.Remove(user);
+            _context.Managers.Add(manager);
+            await _context.SaveChangesAsync();
 
-                return RedirectToAction("Profile", "Account");
-            }
+            return RedirectToAction("Profile", "Account");
         }
         
         return View(model);
@@ -78,14 +75,14 @@ public class ManagerController : Controller
             .Include(m => m.Bank)
             .Include(m => m.Role)
             .Include(m => m.ClientsToApprove)
-            .Include(m => m.CreditsToApprove)
+            .Include(m => m.CreditsToApprove)!
             .ThenInclude(c => c.BankAccount)
             .ThenInclude(b => b.Bank)
             .Include(m => m.InstallmentPlansToApprove)
             .ThenInclude(i => i.BankAccount)
-            .ThenInclude(b => b.Bank)
+            .ThenInclude(b => b!.Bank)
             .Include(o => o.SalaryProjects)
-            .FirstAsync(m => m.Email.Equals(User.Identity.Name)).Result;
+            .FirstAsync(m => m.Email!.Equals(User.Identity!.Name)).Result;
         return manager;
     }
 
@@ -103,38 +100,38 @@ public class ManagerController : Controller
     {
         var manager = ManagerInfo();
         var transfersList = _context.Transfers.ToList();
-        manager.Transfers.Clear();
+        manager.Transfers!.Clear();
         foreach (var transfer in transfersList)
         {
-            if (transfer.BankId == manager.Bank.Id)
+            if (transfer.BankId == manager.Bank!.Id)
             {
                 manager.Transfers.Add(transfer);
             }
         }
 
         var salaryTransfersList = _context.SalaryTransfers.ToList();
-        manager.SalaryTransfers.Clear();
+        manager.SalaryTransfers!.Clear();
         foreach (var transfer in salaryTransfersList)
         {
-            if (transfer.BankId == manager.Bank.Id && transfer.IsApproved == false)
+            if (transfer.BankId == manager.Bank!.Id)
             {
                 manager.SalaryTransfers.Add(transfer);
             }
         }
         
         var accountsList = _context.BankAccounts.ToList();
-        manager.BankAccounts.Clear();
+        manager.BankAccounts!.Clear();
         foreach (var account in accountsList)
         {
             var currentAccount = AccountInfo(account.Id);
-            if (currentAccount.Bank.Id == manager.Bank.Id)
+            if (currentAccount.Bank!.Id == manager.Bank!.Id)
             {
                 manager.BankAccounts.Add(currentAccount);
             }
         }
 
         var clientsToApprove = _context.Clients.ToList();
-        manager.ClientsToApprove.Clear();
+        manager.ClientsToApprove!.Clear();
         foreach (var client in clientsToApprove)
         {
             if (!client.IsApproved)
@@ -144,33 +141,33 @@ public class ManagerController : Controller
         }
 
         var creditsList = _context.Credits.ToList();
-        manager.CreditsToApprove.Clear();
+        manager.CreditsToApprove!.Clear();
         foreach (var credit in creditsList)
         {
-            if (credit.BankAccount.Bank.Id == manager.Bank.Id && !credit.IsApproved)
+            if (credit.BankAccount!.Bank!.Id == manager.Bank!.Id && !credit.IsApproved)
             {
                 manager.CreditsToApprove.Add(credit);
             }
         }
         
         var installmentPlansList = _context.InstallmentPlans.ToList();
-        manager.InstallmentPlansToApprove.Clear();
+        manager.InstallmentPlansToApprove!.Clear();
         foreach (var installmentPlan in installmentPlansList)
         {
-            if (installmentPlan.BankAccount.Bank.Id == manager.Bank.Id && !installmentPlan.IsApproved)
+            if (installmentPlan.BankAccount!.Bank!.Id == manager.Bank!.Id && !installmentPlan.IsApproved)
             {
                 manager.InstallmentPlansToApprove.Add(installmentPlan);
             }
         }
         
-        manager.SalaryProjects.Clear();
+        manager.SalaryProjects!.Clear();
         var salaryProjects = _context.SalaryProjects
             .Include(s => s.BankAccount)
-            .ThenInclude(a => a.Client)
+            .ThenInclude(a => a!.Client)
             .ToList();
         foreach (var project in salaryProjects)
         {
-            if (project.BankAccount.Bank == manager.Bank 
+            if (project.BankAccount!.Bank == manager.Bank 
                 && project.ApprovedByOperator == false
                 && project.ApprovedByCompany == true)
             {
@@ -193,7 +190,7 @@ public class ManagerController : Controller
         if (ModelState.IsValid)
         {
             var account = _context.BankAccounts.FirstOrDefault(c => c.Id == id);
-            if (account.IsFrozen == true)
+            if (account!.IsFrozen == true)
             {
                 account.IsFrozen = false;
             }
@@ -214,7 +211,7 @@ public class ManagerController : Controller
         if (ModelState.IsValid)
         {
             var account = _context.BankAccounts.FirstOrDefault(a => a.Id == id);
-            if (account.IsBlocked == true)
+            if (account!.IsBlocked == true)
             {
                 account.IsBlocked = false;
             }
@@ -235,7 +232,7 @@ public class ManagerController : Controller
         if (ModelState.IsValid)
         {
             var client = _context.Clients.FirstOrDefault(c => c.Id == id);
-            client.IsApproved = true;
+            client!.IsApproved = true;
             _context.Clients.Update(client);
             await _context.SaveChangesAsync();
         }
@@ -261,7 +258,7 @@ public class ManagerController : Controller
             credit.DepositDate = DateTime.Today;
 
             var account = credit.BankAccount;
-            account.Money += credit.Money;
+            account!.Money += credit.Money;
             
             _context.Credits.Update(credit);
             _context.BankAccounts.Update(account);
@@ -289,7 +286,7 @@ public class ManagerController : Controller
             installmentPlab.DepositDate = DateTime.Today;
 
             var account = installmentPlab.BankAccount;
-            account.Money += installmentPlab.Money;
+            account!.Money += installmentPlab.Money;
             
             _context.InstallmentPlans.Update(installmentPlab);
             _context.BankAccounts.Update(account);
@@ -305,10 +302,10 @@ public class ManagerController : Controller
         if (ModelState.IsValid)
         {
             var transfer = _context.SalaryTransfers.FirstOrDefault(t => t.Id == id);
-            transfer.IsApproved = true;
+            transfer!.IsApproved = true;
             
             var account = _context.BankAccounts.FirstOrDefault(a => a.Id == transfer.ToAccountId);
-            account.Money += transfer.TransferAmount;
+            account!.Money += transfer.TransferAmount;
 
             _context.BankAccounts.Update(account);
             _context.SalaryTransfers.Update(transfer);
@@ -322,8 +319,29 @@ public class ManagerController : Controller
     public async Task<IActionResult> SalaryTransferDecline(int id)
     {
         var transfer = _context.SalaryTransfers.FirstOrDefault(t => t.Id == id);
-        _context.SalaryTransfers.Remove(transfer);
+        _context.SalaryTransfers.Remove(transfer!);
         await _context.SaveChangesAsync();
+        return RedirectToAction("Profile", "Account");
+    }
+    
+    [Authorize]
+    public async Task<IActionResult> SalaryTransferCancel(int id)
+    {
+        if (ModelState.IsValid)
+        {
+            var salaryTransfer = _context.SalaryTransfers.FirstOrDefault(t => t.Id == id);
+            var toAccount = _context.BankAccounts.FirstOrDefault(c => c.Id == salaryTransfer!.ToAccountId);
+
+            if (toAccount.Money >= salaryTransfer.TransferAmount)
+            {
+                toAccount.Money -= salaryTransfer.TransferAmount;
+                
+                _context.BankAccounts.Update(toAccount);
+                _context.SalaryTransfers.Remove(salaryTransfer);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         return RedirectToAction("Profile", "Account");
     }
 }
