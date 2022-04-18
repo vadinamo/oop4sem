@@ -32,6 +32,7 @@ public class RegisterModel
     
     [Required(ErrorMessage = "Не указан номер телефона")]
     [DataType(DataType.PhoneNumber)]
+    [RegularExpression(@"^[+][3][7][5][0-9]{9}", ErrorMessage = "Неверно указан номер телефона")]
     public string? PhoneNumber { get; set; }
 
     public int? RoleId { get; set; }
