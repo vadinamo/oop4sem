@@ -182,3 +182,43 @@ void Paint::on_load_clicked()
     scene -> Deserialize(fileName);
 }
 
+
+void Paint::on_pushButton_clicked()
+{
+//    ui -> custom_figures -> clear();
+
+//    QDir directory("/Documents/C#/oop4sem/lab2/build-trapezoid-Desktop_Qt_6_1_0_clang_64bit-Release");
+//    QStringList libs = directory.entryList(QStringList() << "*.dll" << "*.DLL", QDir::Files);
+
+//    foreach(QString libPath, libs)
+//    {
+//        QLibrary lib(directory.absoluteFilePath(libPath));
+
+//        if (!lib.load())
+//        {
+//            qDebug() << lib.errorString();
+//            continue;
+//        }
+
+//        typedef Figure* (*Prototype)();
+//        Prototype  func = (Prototype) lib.resolve("getShapeType");
+
+//        if(func)
+//        {
+//            Figure *tmp = func();
+//            QString figName = tmp->figName();
+
+//            tmp->options = options;
+//            figStack[figName] = tmp;
+
+//            QAction *tmpAct = new QAction(figName, this);
+//            connect(tmpAct,  &QAction::triggered, this, [this, figName]{ on_Figures_2_currentTextChanged(figName); });
+//            ui->Figures_2->addItem(tmp->figName());
+//        }
+//    }
+
+//    QMessageLogger().debug() << "MOUSE DOWN";
+//    ui->Figures_2->setCurrentIndex(-1);
+//    ui->Figures->setCurrentIndex(-1);
+}
+

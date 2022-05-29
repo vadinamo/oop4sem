@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -47,6 +48,8 @@ public:
     QPushButton *fill;
     QPushButton *save;
     QPushButton *load;
+    QComboBox *custom_figures;
+    QPushButton *pushButton;
 
     void setupUi(QWidget *Paint)
     {
@@ -129,6 +132,12 @@ public:
         load = new QPushButton(Paint);
         load->setObjectName(QString::fromUtf8("load"));
         load->setGeometry(QRect(740, 90, 51, 24));
+        custom_figures = new QComboBox(Paint);
+        custom_figures->setObjectName(QString::fromUtf8("custom_figures"));
+        custom_figures->setGeometry(QRect(700, 160, 79, 24));
+        pushButton = new QPushButton(Paint);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setGeometry(QRect(700, 130, 80, 24));
 
         retranslateUi(Paint);
 
@@ -157,6 +166,7 @@ public:
         fill->setText(QCoreApplication::translate("Paint", "fill", nullptr));
         save->setText(QCoreApplication::translate("Paint", "save", nullptr));
         load->setText(QCoreApplication::translate("Paint", "load", nullptr));
+        pushButton->setText(QCoreApplication::translate("Paint", "update libs", nullptr));
     } // retranslateUi
 
 };

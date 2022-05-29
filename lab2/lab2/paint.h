@@ -56,6 +56,7 @@ private slots:
     void on_fill_clicked();
     void on_save_clicked();
     void on_load_clicked();
+    void on_pushButton_clicked();
 };
 
 #endif // PAINT_H
