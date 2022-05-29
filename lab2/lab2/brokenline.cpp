@@ -59,3 +59,8 @@ void BrokenLine::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsSce
 BaseFigure *BrokenLine::CopyFigure()
 {
 }
+
+BaseFigure *BrokenLine::DeserializeFigure(QJsonObject json)
+{
+
+}

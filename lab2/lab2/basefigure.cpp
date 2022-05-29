@@ -10,6 +10,16 @@ BaseFigure::~BaseFigure()
 
 }
 
+QString BaseFigure::GetFigureName()
+{
+    return FigureName;
+}
+
+void BaseFigure::SetFigureName(QString newName)
+{
+    FigureName = newName;
+}
+
 QGraphicsItem *BaseFigure::GetFigureType()
 {
     return figureType;
@@ -46,6 +56,11 @@ void BaseFigure::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsSce
 }
 
 BaseFigure *BaseFigure::CopyFigure()
+{
+
+}
+
+BaseFigure *BaseFigure::DeserializeFigure(QJsonObject json)
 {
 
 }

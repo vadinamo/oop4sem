@@ -156,3 +156,29 @@ void Paint::on_fill_clicked()
     scene -> SetCurrentTool(Fill);
 }
 
+
+void Paint::on_save_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(
+                this,
+                tr("Save figure"),
+                "figure",
+                tr("JSON (*.json)" )
+                );
+
+    scene -> Serialize(fileName);
+}
+
+
+void Paint::on_load_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(
+                this,
+                tr("Load figure"),
+                "",
+                tr("JSON (*.json)" )
+                );
+
+    scene -> Deserialize(fileName);
+}
+

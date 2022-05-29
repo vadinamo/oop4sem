@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QResizeEvent>
 #include <QColorDialog>
+#include <QFileDialog>
 
 #include <paintscene.h>
 
@@ -53,6 +54,8 @@ private slots:
     void on_clear_clicked();
     void on_copy_clicked();
     void on_fill_clicked();
+    void on_save_clicked();
+    void on_load_clicked();
 };
 
 #endif // PAINT_H

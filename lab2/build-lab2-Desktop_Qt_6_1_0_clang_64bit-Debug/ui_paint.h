@@ -45,6 +45,8 @@ public:
     QPushButton *clear;
     QPushButton *copy;
     QPushButton *fill;
+    QPushButton *save;
+    QPushButton *load;
 
     void setupUi(QWidget *Paint)
     {
@@ -121,6 +123,12 @@ public:
         fill = new QPushButton(Paint);
         fill->setObjectName(QString::fromUtf8("fill"));
         fill->setGeometry(QRect(740, 50, 51, 24));
+        save = new QPushButton(Paint);
+        save->setObjectName(QString::fromUtf8("save"));
+        save->setGeometry(QRect(680, 90, 51, 24));
+        load = new QPushButton(Paint);
+        load->setObjectName(QString::fromUtf8("load"));
+        load->setGeometry(QRect(740, 90, 51, 24));
 
         retranslateUi(Paint);
 
@@ -147,6 +155,8 @@ public:
         clear->setText(QCoreApplication::translate("Paint", "clear", nullptr));
         copy->setText(QCoreApplication::translate("Paint", "copy", nullptr));
         fill->setText(QCoreApplication::translate("Paint", "fill", nullptr));
+        save->setText(QCoreApplication::translate("Paint", "save", nullptr));
+        load->setText(QCoreApplication::translate("Paint", "load", nullptr));
     } // retranslateUi
 
 };

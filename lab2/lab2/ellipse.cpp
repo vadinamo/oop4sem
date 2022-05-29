@@ -2,7 +2,7 @@
 
 Ellipse::Ellipse()
 {
-
+    SetFigureName("ellipse");
 }
 
 void Ellipse::mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene, QColor penColour, QColor brushColour, int width)
@@ -66,7 +66,7 @@ BaseFigure *Ellipse::CopyFigure()
     copy -> SetBrushColor(GetBrushColor());
     copy -> SetPenColor(GetPenColor());
     copy -> SetWidth(GetWidth());
-
+    copy -> SetFigureName(GetFigureName());
 
     QPen pen;
     pen.setColor(GetPenColor());
@@ -84,6 +84,38 @@ BaseFigure *Ellipse::CopyFigure()
     copy -> SetFigureType(copyEllipse);
 
     return copy;
+}
+
+BaseFigure *Ellipse::DeserializeFigure(QJsonObject json)
+{
+    Ellipse* result = new Ellipse();
+
+    QPoint center;
+    center.setX(json.value("center_x").toInt());
+    center.setY(json.value("center_y").toInt());
+
+    QRectF rect;
+    rect.setTopLeft(QPointF(json.value("top_left_x").toInt(), json.value("top_left_y").toInt()));
+    rect.setBottomRight(QPointF(json.value("bottom_right_x").toInt(), json.value("bottom_right_y").toInt()));
+
+    QPen pen;
+    pen.setColor(json.value("pen_color").toString());
+    pen.setWidth(json.value("width").toInt());
+
+    QGraphicsEllipseItem* newEllipse = new QGraphicsEllipseItem();
+    newEllipse -> setRect(rect);
+    newEllipse -> setBrush(QColor(json.value("brush_color").toString()));
+    newEllipse -> setPen(pen);
+    newEllipse -> setTransformOriginPoint(center);
+
+    result -> SetPenColor(json.value("pen_color").toString());
+    result -> SetBrushColor(json.value("brush_color").toString());
+    result -> SetWidth(json.value("width").toInt());
+    result -> SetCenterPoint(center);
+    result -> SetBoundingRect(rect);
+    result -> SetFigureType(newEllipse);
+
+    return result;
 }
 
 void Ellipse::fillFigure(const QColor &newColor)

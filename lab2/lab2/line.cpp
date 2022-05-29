@@ -2,7 +2,7 @@
 
 Line::Line()
 {
-
+    SetFigureName("line");
 }
 
 void Line::mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene, QColor penColour, QColor brushColour, int width)
@@ -60,6 +60,7 @@ BaseFigure *Line::CopyFigure()
 {
      Line *copy = new Line();
 
+     copy -> SetFigureName(GetFigureName());
      copy -> SetCenterPoint(GetCenterPoint());
      copy -> SetBoundingRect(GetBoundingRect());
      copy -> SetBrushColor(GetBrushColor());
@@ -81,6 +82,37 @@ BaseFigure *Line::CopyFigure()
      copy -> SetFigureType(copyRect);
 
      return copy;
+}
+
+BaseFigure *Line::DeserializeFigure(QJsonObject json)
+{
+    Line* result = new Line();
+
+    QPoint center;
+    center.setX(json.value("center_x").toInt());
+    center.setY(json.value("center_y").toInt());
+
+    QPen pen;
+    pen.setColor(json.value("pen_color").toString());
+    pen.setWidth(json.value("width").toInt());
+
+    QRectF rect;
+    rect.setTopLeft(QPointF(json.value("top_left_x").toInt(), json.value("top_left_y").toInt()));
+    rect.setBottomRight(QPointF(json.value("bottom_right_x").toInt(), json.value("bottom_right_y").toInt()));
+
+    QGraphicsLineItem* newLine = new QGraphicsLineItem();
+    newLine -> setLine(json.value("top_left_x").toInt(), json.value("top_left_y").toInt(), json.value("bottom_right_x").toInt(), json.value("bottom_right_y").toInt());
+    newLine -> setPen(pen);
+    newLine -> setTransformOriginPoint(center);
+
+    result -> SetPenColor(json.value("pen_color").toString());
+    result -> SetBrushColor(json.value("brush_color").toString());
+    result -> SetWidth(json.value("width").toInt());
+    result -> SetCenterPoint(center);
+    result -> SetBoundingRect(rect);
+    result -> SetFigureType(newLine);
+
+    return result;
 }
 
 void Line::fillFigure(const QColor &newColor)

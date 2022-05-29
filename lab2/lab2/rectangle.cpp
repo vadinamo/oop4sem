@@ -2,7 +2,7 @@
 
 Rectangle::Rectangle()
 {
-
+    SetFigureName("rectangle");
 }
 
 void Rectangle::mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene, QColor penColour, QColor brushColour, int width)
@@ -61,6 +61,7 @@ BaseFigure *Rectangle::CopyFigure()
 {
     Rectangle *copy = new Rectangle();
 
+    copy -> SetFigureName(GetFigureName());
     copy -> SetCenterPoint(GetCenterPoint());
     copy -> SetBoundingRect(GetBoundingRect());
     copy -> SetBrushColor(GetBrushColor());
@@ -87,6 +88,37 @@ BaseFigure *Rectangle::CopyFigure()
     return copy;
 }
 
+BaseFigure *Rectangle::DeserializeFigure(QJsonObject json)
+{
+    Rectangle* result = new Rectangle();
+
+    QPoint center;
+    center.setX(json.value("center_x").toInt());
+    center.setY(json.value("center_y").toInt());
+
+    QRectF rect;
+    rect.setTopLeft(QPointF(json.value("top_left_x").toInt(), json.value("top_left_y").toInt()));
+    rect.setBottomRight(QPointF(json.value("bottom_right_x").toInt(), json.value("bottom_right_y").toInt()));
+
+    QPen pen;
+    pen.setColor(json.value("pen_color").toString());
+    pen.setWidth(json.value("width").toInt());
+
+    QGraphicsRectItem* newRect = new QGraphicsRectItem();
+    newRect -> setRect(rect);
+    newRect -> setBrush(QColor(json.value("brush_color").toString()));
+    newRect -> setPen(pen);
+    newRect -> setTransformOriginPoint(center);
+
+    result -> SetPenColor(json.value("pen_color").toString());
+    result -> SetBrushColor(json.value("brush_color").toString());
+    result -> SetWidth(json.value("width").toInt());
+    result -> SetCenterPoint(center);
+    result -> SetBoundingRect(rect);
+    result -> SetFigureType(newRect);
+
+    return result;
+}
 
 void Rectangle::fillFigure(const QColor &newColor)
 {

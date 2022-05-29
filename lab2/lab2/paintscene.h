@@ -5,9 +5,18 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QTimer>
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
 
 #include "tools.h"
 #include "basefigure.h"
+
+#include "rectangle.h"
+#include "ellipse.h"
+#include "line.h"
+#include "brokenline.h"
+#include "polygon.h"
 
 using namespace std;
 
@@ -29,7 +38,6 @@ private:
     QColor CurrentBrushColor;
 
     BaseFigure* CurrentFigure;
-    BaseFigure* CopyFigure;
     QVector<QPoint> ListOfCenters;
     QVector<BaseFigure*> SceneFiguresList;
 
@@ -54,6 +62,9 @@ public:
 
     void Undo();
     void Redo();
+
+    void Serialize(QString fileName);
+    void Deserialize(QString fileName);
 };
 
 #endif // PAINTSCENE_H

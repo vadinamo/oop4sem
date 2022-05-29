@@ -4,11 +4,14 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QJsonObject>
 
 
 class BaseFigure
 {
 private:
+    QString FigureName;
+
     QGraphicsItem* figureType;
     QPoint centerPoint;
 
@@ -20,6 +23,9 @@ private:
 public:
     BaseFigure();
     ~BaseFigure();
+
+    QString GetFigureName();
+    void SetFigureName(QString newName);
 
     QGraphicsItem *GetFigureType();
     void SetFigureType(QGraphicsItem *setFigureType);
@@ -39,11 +45,13 @@ public:
     int GetWidth() const;
     void SetWidth(int newWidth);
 
+    virtual void fillFigure(const QColor &newColor);
+
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene, QColor penColour, QColor brushColour, int width);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     virtual BaseFigure *CopyFigure();
-    virtual void fillFigure(const QColor &newColor);
+    virtual BaseFigure *DeserializeFigure(QJsonObject json);
 };
 
 #endif // BASEFIGURE_H

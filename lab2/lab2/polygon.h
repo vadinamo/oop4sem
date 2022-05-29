@@ -20,6 +20,7 @@ public:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     void fillFigure(const QColor &newColor);
     BaseFigure *CopyFigure();
+    BaseFigure *DeserializeFigure(QJsonObject json);
 };
 
 #endif // POLYGON_H

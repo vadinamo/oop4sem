@@ -14,14 +14,6 @@ PaintScene::~PaintScene()
 
 void PaintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-
-
-    QMessageLogger().debug() << "center:";
-    for(int i = 0; i < items().length(); i++)
-    {
-        QMessageLogger().debug() << "x: " << ListOfCenters[i].x() << "y: " << ListOfCenters[i].y();
-    }
-
     switch (CurrentTool)
     {
     case None:
@@ -209,4 +201,78 @@ void PaintScene::Redo()
             break;
         }
     }
+}
+
+void PaintScene::Serialize(QString fileName)
+{
+    if (CurrentFigure == NULL)
+    {
+        return;
+    }
+
+    BaseFigure* FigureToSerialize = CurrentFigure;
+    QJsonObject json;
+
+    json.insert("type", QJsonValue::fromVariant(FigureToSerialize -> GetFigureName()));
+
+    json.insert("center_x", QJsonValue::fromVariant(FigureToSerialize -> GetCenterPoint().x()));
+    json.insert("center_y", QJsonValue::fromVariant(FigureToSerialize -> GetCenterPoint().y()));
+
+    json.insert("top_left_x", QJsonValue::fromVariant((int)FigureToSerialize -> GetBoundingRect().topLeft().x()));
+    json.insert("top_left_y", QJsonValue::fromVariant((int)FigureToSerialize -> GetBoundingRect().topLeft().y()));
+
+    json.insert("bottom_right_x", QJsonValue::fromVariant((int)FigureToSerialize -> GetBoundingRect().bottomRight().x()));
+    json.insert("bottom_right_y", QJsonValue::fromVariant((int)FigureToSerialize -> GetBoundingRect().bottomRight().y()));
+
+    json.insert("pen_color", QJsonValue::fromVariant(FigureToSerialize -> GetPenColor()));
+    json.insert("brush_color", QJsonValue::fromVariant(FigureToSerialize -> GetBrushColor()));
+    json.insert("width", QJsonValue::fromVariant(FigureToSerialize -> GetWidth()));
+
+    QJsonDocument document;
+    document.setObject(json);
+
+    QFile file(fileName);
+    file.open(QFile::WriteOnly);
+    file.write(document.toJson());
+    file.close();
+}
+
+void PaintScene::Deserialize(QString fileName)
+{
+    QFile file(fileName);
+    file.open(QFile::ReadOnly);
+
+    QJsonDocument document = QJsonDocument().fromJson(file.readAll());
+    QJsonObject json = document.object();
+    QString type = json.value("type").toString();
+
+    if (type == "ellipse")
+    {
+        CurrentFigure = new Ellipse();
+    }
+
+    else if (type == "line")
+    {
+        CurrentFigure = new Line();
+    }
+
+    else if (type == "polygon")
+    {
+        CurrentFigure = new Polygon();
+    }
+
+    else if (type == "rectangle")
+    {
+        CurrentFigure = new Rectangle();
+    }
+
+    BaseFigure* Figure =  CurrentFigure -> DeserializeFigure(json);
+    SceneFiguresList.push_front(Figure);
+
+    ListOfCenters.push_front(Figure -> GetCenterPoint());
+    this->addItem(Figure->GetFigureType());
+    this->update();
+
+    SetCurrentTool(Move);
+    file.close();
 }

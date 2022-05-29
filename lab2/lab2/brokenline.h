@@ -19,6 +19,7 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     BaseFigure *CopyFigure();
+    BaseFigure *DeserializeFigure(QJsonObject json);
 };
 
 #endif // BLOKENLINE_H

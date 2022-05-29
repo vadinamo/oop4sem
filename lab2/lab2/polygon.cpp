@@ -5,6 +5,7 @@ Polygon::Polygon()
     count = 0;
     isDrawing = true;
     polygon = new QGraphicsPolygonItem;
+    SetFigureName("polygon");
 }
 
 void Polygon::mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene, QColor penColour, QColor brushColour, int width)
@@ -66,6 +67,7 @@ BaseFigure *Polygon::CopyFigure()
 {
     Polygon *copy = new Polygon();
 
+    copy -> SetFigureName(GetFigureName());
     copy -> SetCenterPoint(GetCenterPoint());
     copy -> SetBoundingRect(GetBoundingRect());
     copy -> SetBrushColor(GetBrushColor());
@@ -88,6 +90,38 @@ BaseFigure *Polygon::CopyFigure()
     copy -> SetFigureType(copyRect);
 
     return copy;
+}
+
+BaseFigure *Polygon::DeserializeFigure(QJsonObject json)
+{
+    Polygon* result = new Polygon();
+
+    QPoint center;
+    center.setX(json.value("center_x").toInt());
+    center.setY(json.value("center_y").toInt());
+
+    QRectF rect;
+    rect.setTopLeft(QPointF(json.value("top_left_x").toInt(), json.value("top_left_y").toInt()));
+    rect.setBottomRight(QPointF(json.value("bottom_right_x").toInt(), json.value("bottom_right_y").toInt()));
+
+    QPen pen;
+    pen.setColor(json.value("pen_color").toString());
+    pen.setWidth(json.value("width").toInt());
+
+    QGraphicsPolygonItem* newRect = new QGraphicsPolygonItem();
+    newRect -> setPolygon(rect);
+    newRect -> setBrush(QColor(json.value("brush_color").toString()));
+    newRect -> setPen(pen);
+    newRect -> setTransformOriginPoint(center);
+
+    result -> SetPenColor(json.value("pen_color").toString());
+    result -> SetBrushColor(json.value("brush_color").toString());
+    result -> SetWidth(json.value("width").toInt());
+    result -> SetCenterPoint(center);
+    result -> SetBoundingRect(rect);
+    result -> SetFigureType(newRect);
+
+    return result;
 }
 
 void Polygon::fillFigure(const QColor &newColor)
