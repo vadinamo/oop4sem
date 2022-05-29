@@ -18,6 +18,7 @@ public:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     void fillFigure(const QColor &newColor);
     BaseFigure *CopyFigure();
+    QJsonObject SerializeFigure();
     BaseFigure *DeserializeFigure(QJsonObject json);
 };
 

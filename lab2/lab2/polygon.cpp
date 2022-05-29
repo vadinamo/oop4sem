@@ -92,6 +92,35 @@ BaseFigure *Polygon::CopyFigure()
     return copy;
 }
 
+QJsonObject Polygon::SerializeFigure()
+{
+    QJsonObject json;
+    json.insert("type", QJsonValue::fromVariant(GetFigureName()));
+
+    json.insert("center_x", QJsonValue::fromVariant(GetCenterPoint().x()));
+    json.insert("center_y", QJsonValue::fromVariant(GetCenterPoint().y()));
+
+    json.insert("top_left_x", QJsonValue::fromVariant((int)GetBoundingRect().topLeft().x()));
+    json.insert("top_left_y", QJsonValue::fromVariant((int)GetBoundingRect().topLeft().y()));
+
+    json.insert("bottom_right_x", QJsonValue::fromVariant((int)GetBoundingRect().bottomRight().x()));
+    json.insert("bottom_right_y", QJsonValue::fromVariant((int)GetBoundingRect().bottomRight().y()));
+
+    json.insert("pen_color", QJsonValue::fromVariant(GetPenColor()));
+    json.insert("brush_color", QJsonValue::fromVariant(GetBrushColor()));
+    json.insert("width", QJsonValue::fromVariant(GetWidth()));
+
+    int i = 0;
+    foreach(QPointF point, polygon -> polygon())
+    {
+        json.insert("polygon_x" + QString::number(i), QJsonValue::fromVariant(point.x()));
+        json.insert("polygon_y" + QString::number(i), QJsonValue::fromVariant(point.y()));
+        i++;
+    }
+
+    return json;
+}
+
 BaseFigure *Polygon::DeserializeFigure(QJsonObject json)
 {
     Polygon* result = new Polygon();
@@ -108,8 +137,16 @@ BaseFigure *Polygon::DeserializeFigure(QJsonObject json)
     pen.setColor(json.value("pen_color").toString());
     pen.setWidth(json.value("width").toInt());
 
+    QPolygonF newPolygon;
+    for(int i = 0; i < json.length(); i++)
+    {
+        if(json.value("polygon_x" + QString::number(i)).toInt() == 0)
+            break;
+        newPolygon << QPoint(json.value("polygon_x" + QString::number(i)).toInt(), json.value("polygon_y" + QString::number(i)).toInt());
+    }
+
     QGraphicsPolygonItem* newRect = new QGraphicsPolygonItem();
-    newRect -> setPolygon(rect);
+    newRect -> setPolygon(newPolygon);
     newRect -> setBrush(QColor(json.value("brush_color").toString()));
     newRect -> setPen(pen);
     newRect -> setTransformOriginPoint(center);

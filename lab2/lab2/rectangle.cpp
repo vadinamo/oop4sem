@@ -88,6 +88,27 @@ BaseFigure *Rectangle::CopyFigure()
     return copy;
 }
 
+QJsonObject Rectangle::SerializeFigure()
+{
+    QJsonObject json;
+    json.insert("type", QJsonValue::fromVariant(GetFigureName()));
+
+    json.insert("center_x", QJsonValue::fromVariant(GetCenterPoint().x()));
+    json.insert("center_y", QJsonValue::fromVariant(GetCenterPoint().y()));
+
+    json.insert("top_left_x", QJsonValue::fromVariant((int)GetBoundingRect().topLeft().x()));
+    json.insert("top_left_y", QJsonValue::fromVariant((int)GetBoundingRect().topLeft().y()));
+
+    json.insert("bottom_right_x", QJsonValue::fromVariant((int)GetBoundingRect().bottomRight().x()));
+    json.insert("bottom_right_y", QJsonValue::fromVariant((int)GetBoundingRect().bottomRight().y()));
+
+    json.insert("pen_color", QJsonValue::fromVariant(GetPenColor()));
+    json.insert("brush_color", QJsonValue::fromVariant(GetBrushColor()));
+    json.insert("width", QJsonValue::fromVariant(GetWidth()));
+
+    return json;
+}
+
 BaseFigure *Rectangle::DeserializeFigure(QJsonObject json)
 {
     Rectangle* result = new Rectangle();

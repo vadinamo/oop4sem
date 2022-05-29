@@ -60,6 +60,11 @@ BaseFigure *BaseFigure::CopyFigure()
 
 }
 
+QJsonObject BaseFigure::SerializeFigure()
+{
+
+}
+
 BaseFigure *BaseFigure::DeserializeFigure(QJsonObject json)
 {
 

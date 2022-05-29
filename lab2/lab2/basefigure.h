@@ -51,6 +51,7 @@ public:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     virtual BaseFigure *CopyFigure();
+    virtual QJsonObject SerializeFigure();
     virtual BaseFigure *DeserializeFigure(QJsonObject json);
 };
 
