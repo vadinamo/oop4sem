@@ -86,3 +86,10 @@ BaseFigure *Rectangle::CopyFigure()
 
     return copy;
 }
+
+
+void Rectangle::fillFigure(const QColor &newColor)
+{
+    SetBrushColor(newColor);
+    rectangle -> setBrush(newColor);
+}

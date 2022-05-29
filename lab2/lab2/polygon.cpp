@@ -89,3 +89,9 @@ BaseFigure *Polygon::CopyFigure()
 
     return copy;
 }
+
+void Polygon::fillFigure(const QColor &newColor)
+{
+    polygon -> setBrush(newColor);
+    SetBrushColor(newColor);
+}

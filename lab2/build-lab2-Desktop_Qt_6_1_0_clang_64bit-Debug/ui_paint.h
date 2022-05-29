@@ -44,7 +44,7 @@ public:
     QRadioButton *polygon;
     QPushButton *clear;
     QPushButton *copy;
-    QPushButton *paste;
+    QPushButton *fill;
 
     void setupUi(QWidget *Paint)
     {
@@ -118,9 +118,9 @@ public:
         copy = new QPushButton(Paint);
         copy->setObjectName(QString::fromUtf8("copy"));
         copy->setGeometry(QRect(680, 50, 51, 24));
-        paste = new QPushButton(Paint);
-        paste->setObjectName(QString::fromUtf8("paste"));
-        paste->setGeometry(QRect(740, 50, 51, 24));
+        fill = new QPushButton(Paint);
+        fill->setObjectName(QString::fromUtf8("fill"));
+        fill->setGeometry(QRect(740, 50, 51, 24));
 
         retranslateUi(Paint);
 
@@ -146,7 +146,7 @@ public:
         polygon->setText(QCoreApplication::translate("Paint", "polygon", nullptr));
         clear->setText(QCoreApplication::translate("Paint", "clear", nullptr));
         copy->setText(QCoreApplication::translate("Paint", "copy", nullptr));
-        paste->setText(QCoreApplication::translate("Paint", "paste", nullptr));
+        fill->setText(QCoreApplication::translate("Paint", "fill", nullptr));
     } // retranslateUi
 
 };

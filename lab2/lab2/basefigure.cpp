@@ -89,3 +89,8 @@ void BaseFigure::SetWidth(int newWidth)
 {
     width = newWidth;
 }
+
+void BaseFigure::fillFigure(const QColor &newColor)
+{
+
+}

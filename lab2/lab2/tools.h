@@ -6,7 +6,8 @@ enum Tools
     None,
     Draw,
     Move,
-    Copy
+    Copy,
+    Fill
 };
 
 #endif // TOOLS_H

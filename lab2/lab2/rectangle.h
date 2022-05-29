@@ -16,6 +16,7 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene, QColor penColour, QColor brushColour, int width);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
+    void fillFigure(const QColor &newColor);
     BaseFigure *CopyFigure();
 };
 

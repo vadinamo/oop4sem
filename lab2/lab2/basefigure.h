@@ -43,6 +43,7 @@ public:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     virtual BaseFigure *CopyFigure();
+    virtual void fillFigure(const QColor &newColor);
 };
 
 #endif // BASEFIGURE_H

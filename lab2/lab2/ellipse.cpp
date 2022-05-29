@@ -83,6 +83,11 @@ BaseFigure *Ellipse::CopyFigure()
 
     copy -> SetFigureType(copyEllipse);
 
-
     return copy;
+}
+
+void Ellipse::fillFigure(const QColor &newColor)
+{
+    SetBrushColor(newColor);
+    ellipse -> setBrush(newColor);
 }

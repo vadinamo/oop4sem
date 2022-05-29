@@ -82,3 +82,14 @@ BaseFigure *Line::CopyFigure()
 
      return copy;
 }
+
+void Line::fillFigure(const QColor &newColor)
+{
+    SetPenColor(newColor);
+
+    QPen pen;
+    pen.setColor(newColor);
+    pen.setWidth(GetWidth());
+
+    line -> setPen(pen);
+}

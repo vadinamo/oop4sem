@@ -150,3 +150,9 @@ void Paint::on_copy_clicked()
 {
     scene -> SetCurrentTool(Copy);
 }
+
+void Paint::on_fill_clicked()
+{
+    scene -> SetCurrentTool(Fill);
+}
+

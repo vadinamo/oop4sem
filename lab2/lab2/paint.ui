@@ -282,7 +282,7 @@
     <string>copy</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="paste">
+  <widget class="QPushButton" name="fill">
    <property name="geometry">
     <rect>
      <x>740</x>
@@ -292,7 +292,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>paste</string>
+    <string>fill</string>
    </property>
   </widget>
  </widget>

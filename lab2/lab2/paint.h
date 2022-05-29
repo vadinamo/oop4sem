@@ -52,6 +52,7 @@ private slots:
     void on_polygon_clicked();
     void on_clear_clicked();
     void on_copy_clicked();
+    void on_fill_clicked();
 };
 
 #endif // PAINT_H

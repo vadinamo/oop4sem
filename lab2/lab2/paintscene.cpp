@@ -34,6 +34,9 @@ void PaintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     case Move:
     {
+        QPointF PointToFind;
+        PointToFind.setX(event->scenePos().x());
+        PointToFind.setY(event->scenePos().y());
         QList<QGraphicsItem *> FiguresList = items(event -> scenePos());
 
         if(!FiguresList.isEmpty()){
@@ -66,6 +69,26 @@ void PaintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         this->update();
 
         SetCurrentTool(Move);
+        break;
+    }
+
+    case Fill:
+    {
+        QPointF PointToFind;
+        PointToFind.setX(event->scenePos().x());
+        PointToFind.setY(event->scenePos().y());
+        QList<QGraphicsItem *> FiguresList = items(PointToFind); // getting all figures, wich on this point
+
+        if(!FiguresList.isEmpty()){
+            for(int i = 0; i < items().length(); i++){
+                if(items().at(i) == FiguresList.at(0) && items().at(i) -> isVisible() && ListOfCenters.at(i).x() != 0){
+                    SceneFiguresList.at(i)->fillFigure(CurrentBrushColor);
+                    break;
+                }
+                update();
+            }
+        }
+        break;
     }
     }
 }
@@ -100,7 +123,6 @@ void PaintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         ListOfCenters.push_front(CurrentFigure -> GetCenterPoint());
         update();
 
-        SceneFiguresList.push_front(CurrentFigure);
         break;
 
     case Move:
@@ -159,6 +181,7 @@ void PaintScene::SetCurrentFigure(BaseFigure *NewFigure)
 {
     CurrentFigure = NewFigure;
     CurrentTool = Draw;
+    SceneFiguresList.push_front(CurrentFigure);
 }
 
 void PaintScene::Undo()
