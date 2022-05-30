@@ -26,9 +26,6 @@ void PaintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     case Move:
     {
-        QPointF PointToFind;
-        PointToFind.setX(event->scenePos().x());
-        PointToFind.setY(event->scenePos().y());
         QList<QGraphicsItem *> FiguresList = items(event -> scenePos());
 
         if(!FiguresList.isEmpty()){
@@ -120,6 +117,10 @@ void PaintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         CurrentFigure -> mouseReleaseEvent(event, this);
         ListOfCenters.push_front(CurrentFigure -> GetCenterPoint());
         update();
+        if (CurrentFigure -> GetFigureName() != "polygon")
+        {
+            SetCurrentTool(Move);
+        }
 
         break;
 
