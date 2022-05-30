@@ -1,5 +1,7 @@
 #include "paintscene.h"
 #include "math.h"
+#include <QLibrary>
+#include <QDir>
 
 PaintScene::PaintScene(QObject *parent) : QGraphicsScene(parent)
 {
@@ -258,7 +260,28 @@ void PaintScene::Deserialize(QString fileName)
 
     else if (type == "trapezoid")
     {
-        CurrentFigure = new Trapezoid();
+        QDir Directory("/Users/vadinamo/Documents/C#/oop4sem/lab2/lab2/libs");
+        QStringList LibrariesDirectory = Directory.entryList();
+
+        if(!LibrariesDirectory.isEmpty()){
+
+            LibrariesDirectory.pop_front();
+            LibrariesDirectory.pop_front();
+
+            foreach(QString LibraryPath, LibrariesDirectory){
+
+                QLibrary Library(Directory.absoluteFilePath(LibraryPath));
+
+                if(Library.load()){
+                    typedef BaseFigure* (*ExtractFunction)();
+                    ExtractFunction ExtractFromLibrary = (ExtractFunction) Library.resolve("extractFromLibrary");
+
+                    if(ExtractFromLibrary){
+                        ExtractFromLibrary() -> DeserializeFigure(json);
+                    }
+                }
+            }
+        }
     }
 
     BaseFigure* Figure =  CurrentFigure -> DeserializeFigure(json);

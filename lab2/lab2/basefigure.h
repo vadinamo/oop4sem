@@ -24,6 +24,8 @@ public:
     BaseFigure();
     ~BaseFigure();
 
+    BaseFigure *CreateFigure();
+
     QString GetFigureName();
     void SetFigureName(QString newName);
 

@@ -17,7 +17,6 @@
 #include "line.h"
 #include "brokenline.h"
 #include "polygon.h"
-#include "trapezoid.h"
 
 using namespace std;
 

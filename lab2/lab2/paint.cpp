@@ -6,7 +6,6 @@
 #include "line.h"
 #include "brokenline.h"
 #include "polygon.h"
-#include "trapezoid.h"
 
 Paint::Paint(QWidget *parent) :
     QWidget(parent),
@@ -184,49 +183,29 @@ void Paint::on_load_clicked()
 }
 
 
-void Paint::on_pushButton_clicked()
+void Paint::on_update_clicked()
 {
-//    ui -> custom_figures -> clear();
+    QDir Directory("/Users/vadinamo/Documents/C#/oop4sem/lab2/lab2/libs");
+    QStringList LibrariesDirectory = Directory.entryList();
 
-//    QDir directory("/Documents/C#/oop4sem/lab2/build-trapezoid-Desktop_Qt_6_1_0_clang_64bit-Release");
-//    QStringList libs = directory.entryList(QStringList() << "*.dll" << "*.DLL", QDir::Files);
+    if(!LibrariesDirectory.isEmpty()){
 
-//    foreach(QString libPath, libs)
-//    {
-//        QLibrary lib(directory.absoluteFilePath(libPath));
+        LibrariesDirectory.pop_front();
+        LibrariesDirectory.pop_front();
 
-//        if (!lib.load())
-//        {
-//            qDebug() << lib.errorString();
-//            continue;
-//        }
+        foreach(QString LibraryPath, LibrariesDirectory){
 
-//        typedef Figure* (*Prototype)();
-//        Prototype  func = (Prototype) lib.resolve("getShapeType");
+            QLibrary Library(Directory.absoluteFilePath(LibraryPath));
 
-//        if(func)
-//        {
-//            Figure *tmp = func();
-//            QString figName = tmp->figName();
+            if(Library.load()){
+                typedef BaseFigure* (*ExtractFunction)();
+                ExtractFunction ExtractFromLibrary = (ExtractFunction) Library.resolve("extractFromLibrary");
 
-//            tmp->options = options;
-//            figStack[figName] = tmp;
-
-//            QAction *tmpAct = new QAction(figName, this);
-//            connect(tmpAct,  &QAction::triggered, this, [this, figName]{ on_Figures_2_currentTextChanged(figName); });
-//            ui->Figures_2->addItem(tmp->figName());
-//        }
-//    }
-
-//    QMessageLogger().debug() << "MOUSE DOWN";
-//    ui->Figures_2->setCurrentIndex(-1);
-//    ui->Figures->setCurrentIndex(-1);
+                if(ExtractFromLibrary){
+                    scene -> SetCurrentFigure(ExtractFromLibrary());
+                    ui -> update -> setText(ExtractFromLibrary() -> GetFigureName());
+                }
+            }
+        }
+    }
 }
-
-
-void Paint::on_trapezoid_clicked()
-{
-    Trapezoid *trapezoid = new Trapezoid();
-    scene -> SetCurrentFigure(trapezoid);
-}
-

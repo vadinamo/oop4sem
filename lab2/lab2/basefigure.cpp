@@ -5,6 +5,11 @@ BaseFigure::BaseFigure()
     figureType = NULL;
 }
 
+BaseFigure *BaseFigure::CreateFigure()
+{
+
+}
+
 BaseFigure::~BaseFigure()
 {
 

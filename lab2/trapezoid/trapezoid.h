@@ -4,12 +4,6 @@
 #include "trapezoid_global.h"
 #include "../lab2/basefigure.h"
 
-#include <QGraphicsScene>
-#include <QGraphicsRectItem>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsPolygonItem>
-#include <QPolygonF>
-
 extern "C" TRAPEZOID_EXPORT BaseFigure* extractFromLibrary();
 
 class TRAPEZOID_EXPORT Trapezoid : public BaseFigure
@@ -27,6 +21,7 @@ public:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
     void fillFigure(const QColor &newColor);
     BaseFigure *CopyFigure();
+    BaseFigure *CreateFigure();
     QJsonObject SerializeFigure();
     BaseFigure *DeserializeFigure(QJsonObject json);
 };

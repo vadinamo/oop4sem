@@ -6,6 +6,7 @@
 #include <QResizeEvent>
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QLibrary>
 
 #include <paintscene.h>
 
@@ -56,8 +57,7 @@ private slots:
     void on_fill_clicked();
     void on_save_clicked();
     void on_load_clicked();
-    void on_pushButton_clicked();
-    void on_trapezoid_clicked();
+    void on_update_clicked();
 };
 
 #endif // PAINT_H

@@ -17,8 +17,7 @@ SOURCES += \
     paint.cpp \
     paintscene.cpp \
     polygon.cpp \
-    rectangle.cpp \
-    trapezoid.cpp
+    rectangle.cpp
 
 HEADERS += \
     basefigure.h \
@@ -29,8 +28,7 @@ HEADERS += \
     paintscene.h \
     polygon.h \
     rectangle.h \
-    tools.h \
-    trapezoid.h
+    tools.h
 
 FORMS += \
     paint.ui

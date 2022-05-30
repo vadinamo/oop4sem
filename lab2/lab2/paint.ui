@@ -321,17 +321,7 @@
     <string>load</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="custom_figures">
-   <property name="geometry">
-    <rect>
-     <x>700</x>
-     <y>160</y>
-     <width>79</width>
-     <height>24</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="update">
    <property name="geometry">
     <rect>
      <x>700</x>
@@ -342,19 +332,6 @@
    </property>
    <property name="text">
     <string>update libs</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="trapezoid">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>10</y>
-     <width>81</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>trapezoid</string>
    </property>
   </widget>
  </widget>
