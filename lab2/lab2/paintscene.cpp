@@ -258,30 +258,13 @@ void PaintScene::Deserialize(QString fileName)
         CurrentFigure = new Rectangle();
     }
 
-    else if (type == "trapezoid")
+    else if (type != "")
     {
-        QDir Directory("/Users/vadinamo/Documents/C#/oop4sem/lab2/lab2/libs");
-        QStringList LibrariesDirectory = Directory.entryList();
-
-        if(!LibrariesDirectory.isEmpty()){
-
-            LibrariesDirectory.pop_front();
-            LibrariesDirectory.pop_front();
-
-            foreach(QString LibraryPath, LibrariesDirectory){
-
-                QLibrary Library(Directory.absoluteFilePath(LibraryPath));
-
-                if(Library.load()){
-                    typedef BaseFigure* (*ExtractFunction)();
-                    ExtractFunction ExtractFromLibrary = (ExtractFunction) Library.resolve("extractFromLibrary");
-
-                    if(ExtractFromLibrary){
-                        ExtractFromLibrary() -> DeserializeFigure(json);
-                    }
-                }
-            }
+        if(CustomFigure == NULL)
+        {
+            return;
         }
+        CurrentFigure = CustomFigure;
     }
 
     BaseFigure* Figure =  CurrentFigure -> DeserializeFigure(json);
@@ -293,4 +276,14 @@ void PaintScene::Deserialize(QString fileName)
 
     SetCurrentTool(Move);
     file.close();
+}
+
+void PaintScene::SetCustomFigure(BaseFigure *NewCustomFigure)
+{
+    CustomFigure = NewCustomFigure;
+}
+
+BaseFigure *PaintScene::GetCustomFigure()
+{
+    return CustomFigure;
 }

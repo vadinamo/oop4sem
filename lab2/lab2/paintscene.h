@@ -38,6 +38,7 @@ private:
     QColor CurrentBrushColor;
 
     BaseFigure* CurrentFigure;
+    BaseFigure* CustomFigure;
     QVector<QPoint> ListOfCenters;
     QVector<BaseFigure*> SceneFiguresList;
 
@@ -57,6 +58,9 @@ public:
 
     void SetCurrentFigure(BaseFigure *NewFigure);
     void SetCurrentWidth(int NewWidth);
+
+    void SetCustomFigure(BaseFigure *NewCustomFigure);
+    BaseFigure *GetCustomFigure();
 
     int GetCurrentWidth();
 

@@ -23,6 +23,7 @@ Paint::Paint(QWidget *parent) :
     scene -> SetCurrentPenColor(Qt::white);
     scene -> SetCurrentWidth(1);
     ui ->width_edit -> setText("1");
+    scene -> SetCustomFigure(NULL);
 }
 
 Paint::~Paint()
@@ -185,25 +186,34 @@ void Paint::on_load_clicked()
 
 void Paint::on_update_clicked()
 {
-    QDir Directory("/Users/vadinamo/Documents/C#/oop4sem/lab2/lab2/libs");
-    QStringList LibrariesDirectory = Directory.entryList();
+    if (scene -> GetCustomFigure() != NULL)
+    {
+        scene -> SetCurrentFigure(scene -> GetCustomFigure());
+    }
 
-    if(!LibrariesDirectory.isEmpty()){
+    else
+    {
+        QDir Directory("/Users/vadinamo/Documents/C#/oop4sem/lab2/lab2/libs");
+        QStringList LibrariesDirectory = Directory.entryList();
 
-        LibrariesDirectory.pop_front();
-        LibrariesDirectory.pop_front();
+        if(!LibrariesDirectory.isEmpty()){
 
-        foreach(QString LibraryPath, LibrariesDirectory){
+            LibrariesDirectory.pop_front();
+            LibrariesDirectory.pop_front();
 
-            QLibrary Library(Directory.absoluteFilePath(LibraryPath));
+            foreach(QString LibraryPath, LibrariesDirectory){
 
-            if(Library.load()){
-                typedef BaseFigure* (*ExtractFunction)();
-                ExtractFunction ExtractFromLibrary = (ExtractFunction) Library.resolve("extractFromLibrary");
+                QLibrary Library(Directory.absoluteFilePath(LibraryPath));
 
-                if(ExtractFromLibrary){
-                    scene -> SetCurrentFigure(ExtractFromLibrary());
-                    ui -> update -> setText(ExtractFromLibrary() -> GetFigureName());
+                if(Library.load()){
+                    typedef BaseFigure* (*ExtractFunction)();
+                    ExtractFunction ExtractFromLibrary = (ExtractFunction) Library.resolve("extractFromLibrary");
+
+                    if(ExtractFromLibrary){
+                        scene -> SetCurrentFigure(ExtractFromLibrary());
+                        scene -> SetCustomFigure(ExtractFromLibrary());
+                        ui -> update -> setText(ExtractFromLibrary() -> GetFigureName());
+                    }
                 }
             }
         }
