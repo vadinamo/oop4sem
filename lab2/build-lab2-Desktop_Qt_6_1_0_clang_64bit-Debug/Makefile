@@ -60,7 +60,8 @@ SOURCES       = ../lab2/basefigure.cpp \
 		../lab2/paint.cpp \
 		../lab2/paintscene.cpp \
 		../lab2/polygon.cpp \
-		../lab2/rectangle.cpp moc_paint.cpp \
+		../lab2/rectangle.cpp \
+		../lab2/trapezoid.cpp moc_paint.cpp \
 		moc_paintscene.cpp
 OBJECTS       = basefigure.o \
 		brokenline.o \
@@ -71,6 +72,7 @@ OBJECTS       = basefigure.o \
 		paintscene.o \
 		polygon.o \
 		rectangle.o \
+		trapezoid.o \
 		moc_paint.o \
 		moc_paintscene.o
 DIST          = /Users/vadinamo/Qt/6.1.0/clang_64/mkspecs/features/spec_pre.prf \
@@ -209,7 +211,8 @@ DIST          = /Users/vadinamo/Qt/6.1.0/clang_64/mkspecs/features/spec_pre.prf 
 		../lab2/paintscene.h \
 		../lab2/polygon.h \
 		../lab2/rectangle.h \
-		../lab2/tools.h ../lab2/basefigure.cpp \
+		../lab2/tools.h \
+		../lab2/trapezoid.h ../lab2/basefigure.cpp \
 		../lab2/brokenline.cpp \
 		../lab2/ellipse.cpp \
 		../lab2/line.cpp \
@@ -217,7 +220,8 @@ DIST          = /Users/vadinamo/Qt/6.1.0/clang_64/mkspecs/features/spec_pre.prf 
 		../lab2/paint.cpp \
 		../lab2/paintscene.cpp \
 		../lab2/polygon.cpp \
-		../lab2/rectangle.cpp
+		../lab2/rectangle.cpp \
+		../lab2/trapezoid.cpp
 QMAKE_TARGET  = lab2
 DESTDIR       = 
 TARGET        = lab2.app/Contents/MacOS/lab2
@@ -536,8 +540,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /Users/vadinamo/Qt/6.1.0/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../lab2/basefigure.h ../lab2/brokenline.h ../lab2/ellipse.h ../lab2/line.h ../lab2/paint.h ../lab2/paintscene.h ../lab2/polygon.h ../lab2/rectangle.h ../lab2/tools.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../lab2/basefigure.cpp ../lab2/brokenline.cpp ../lab2/ellipse.cpp ../lab2/line.cpp ../lab2/main.cpp ../lab2/paint.cpp ../lab2/paintscene.cpp ../lab2/polygon.cpp ../lab2/rectangle.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../lab2/basefigure.h ../lab2/brokenline.h ../lab2/ellipse.h ../lab2/line.h ../lab2/paint.h ../lab2/paintscene.h ../lab2/polygon.h ../lab2/rectangle.h ../lab2/tools.h ../lab2/trapezoid.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../lab2/basefigure.cpp ../lab2/brokenline.cpp ../lab2/ellipse.cpp ../lab2/line.cpp ../lab2/main.cpp ../lab2/paint.cpp ../lab2/paintscene.cpp ../lab2/polygon.cpp ../lab2/rectangle.cpp ../lab2/trapezoid.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../lab2/paint.ui $(DISTDIR)/
 
 
@@ -585,6 +589,8 @@ moc_paint.cpp: ../lab2/paint.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtGui.framework/Headers/qevent.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		../lab2/paintscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsScene \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
@@ -592,10 +598,22 @@ moc_paint.cpp: ../lab2/paint.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QDebug \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QFile \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qfile.h \
 		../lab2/tools.h \
 		../lab2/basefigure.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
+		../lab2/rectangle.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsRectItem \
+		../lab2/ellipse.h \
+		../lab2/line.h \
+		../lab2/brokenline.h \
+		../lab2/polygon.h \
 		moc_predefs.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/libexec/moc
 	/Users/vadinamo/Qt/6.1.0/clang_64/libexec/moc $(DEFINES) --include '/Users/vadinamo/Documents/C#/oop4sem/lab2/build-lab2-Desktop_Qt_6_1_0_clang_64bit-Debug/moc_predefs.h' -I/Users/vadinamo/Qt/6.1.0/clang_64/mkspecs/macx-clang -I'/Users/vadinamo/Documents/C#/oop4sem/lab2/lab2' -I/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers -I/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtGui.framework/Headers -I/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/vadinamo/Qt/6.1.0/clang_64/lib ../lab2/paint.h -o moc_paint.cpp
@@ -609,10 +627,22 @@ moc_paintscene.cpp: ../lab2/paintscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qtimer.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QDebug \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QFile \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qfile.h \
 		../lab2/tools.h \
 		../lab2/basefigure.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
+		../lab2/rectangle.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsRectItem \
+		../lab2/ellipse.h \
+		../lab2/line.h \
+		../lab2/brokenline.h \
+		../lab2/polygon.h \
 		moc_predefs.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/libexec/moc
 	/Users/vadinamo/Qt/6.1.0/clang_64/libexec/moc $(DEFINES) --include '/Users/vadinamo/Documents/C#/oop4sem/lab2/build-lab2-Desktop_Qt_6_1_0_clang_64bit-Debug/moc_predefs.h' -I/Users/vadinamo/Qt/6.1.0/clang_64/mkspecs/macx-clang -I'/Users/vadinamo/Documents/C#/oop4sem/lab2/lab2' -I/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers -I/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtGui.framework/Headers -I/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/vadinamo/Qt/6.1.0/clang_64/lib ../lab2/paintscene.h -o moc_paintscene.cpp
@@ -646,7 +676,9 @@ basefigure.o: ../lab2/basefigure.cpp ../lab2/basefigure.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
-		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o basefigure.o ../lab2/basefigure.cpp
 
 brokenline.o: ../lab2/brokenline.cpp ../lab2/brokenline.h \
@@ -657,7 +689,9 @@ brokenline.o: ../lab2/brokenline.cpp ../lab2/brokenline.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
-		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o brokenline.o ../lab2/brokenline.cpp
 
 ellipse.o: ../lab2/ellipse.cpp ../lab2/ellipse.h \
@@ -668,7 +702,9 @@ ellipse.o: ../lab2/ellipse.cpp ../lab2/ellipse.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
-		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ellipse.o ../lab2/ellipse.cpp
 
 line.o: ../lab2/line.cpp ../lab2/line.h \
@@ -679,7 +715,9 @@ line.o: ../lab2/line.cpp ../lab2/line.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
-		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o line.o ../lab2/line.cpp
 
 main.o: ../lab2/main.cpp ../lab2/paint.h \
@@ -691,6 +729,8 @@ main.o: ../lab2/main.cpp ../lab2/paint.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtGui.framework/Headers/qevent.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		../lab2/paintscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsScene \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
@@ -698,10 +738,22 @@ main.o: ../lab2/main.cpp ../lab2/paint.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QDebug \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QFile \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qfile.h \
 		../lab2/tools.h \
 		../lab2/basefigure.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
+		../lab2/rectangle.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsRectItem \
+		../lab2/ellipse.h \
+		../lab2/line.h \
+		../lab2/brokenline.h \
+		../lab2/polygon.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../lab2/main.cpp
@@ -715,6 +767,8 @@ paint.o: ../lab2/paint.cpp ../lab2/paint.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtGui.framework/Headers/qevent.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		../lab2/paintscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsScene \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
@@ -722,17 +776,24 @@ paint.o: ../lab2/paint.cpp ../lab2/paint.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QDebug \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QFile \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qfile.h \
 		../lab2/tools.h \
 		../lab2/basefigure.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
-		ui_paint.h \
 		../lab2/rectangle.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsRectItem \
 		../lab2/ellipse.h \
 		../lab2/line.h \
 		../lab2/brokenline.h \
-		../lab2/polygon.h
+		../lab2/polygon.h \
+		ui_paint.h \
+		../lab2/trapezoid.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o paint.o ../lab2/paint.cpp
 
 paintscene.o: ../lab2/paintscene.cpp ../lab2/paintscene.h \
@@ -744,10 +805,22 @@ paintscene.o: ../lab2/paintscene.cpp ../lab2/paintscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qtimer.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QDebug \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QFile \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qfile.h \
 		../lab2/tools.h \
 		../lab2/basefigure.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
-		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
+		../lab2/rectangle.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsRectItem \
+		../lab2/ellipse.h \
+		../lab2/line.h \
+		../lab2/brokenline.h \
+		../lab2/polygon.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o paintscene.o ../lab2/paintscene.cpp
 
 polygon.o: ../lab2/polygon.cpp ../lab2/polygon.h \
@@ -758,7 +831,9 @@ polygon.o: ../lab2/polygon.cpp ../lab2/polygon.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
-		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o polygon.o ../lab2/polygon.cpp
 
 rectangle.o: ../lab2/rectangle.cpp ../lab2/rectangle.h \
@@ -769,8 +844,22 @@ rectangle.o: ../lab2/rectangle.cpp ../lab2/rectangle.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
 		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
-		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rectangle.o ../lab2/rectangle.cpp
+
+trapezoid.o: ../lab2/trapezoid.cpp ../lab2/trapezoid.h \
+		../lab2/basefigure.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsScene \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/QJsonObject \
+		/Users/vadinamo/Qt/6.1.0/clang_64/lib/QtCore.framework/Headers/qjsonobject.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o trapezoid.o ../lab2/trapezoid.cpp
 
 moc_paint.o: moc_paint.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_paint.o moc_paint.cpp

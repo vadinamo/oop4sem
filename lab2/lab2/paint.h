@@ -57,6 +57,7 @@ private slots:
     void on_save_clicked();
     void on_load_clicked();
     void on_pushButton_clicked();
+    void on_trapezoid_clicked();
 };
 
 #endif // PAINT_H

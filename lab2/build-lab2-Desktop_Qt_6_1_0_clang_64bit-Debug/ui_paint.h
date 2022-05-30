@@ -50,6 +50,7 @@ public:
     QPushButton *load;
     QComboBox *custom_figures;
     QPushButton *pushButton;
+    QRadioButton *trapezoid;
 
     void setupUi(QWidget *Paint)
     {
@@ -107,10 +108,10 @@ public:
         width_edit->setGeometry(QRect(520, 430, 113, 24));
         colour = new QPushButton(Paint);
         colour->setObjectName(QString::fromUtf8("colour"));
-        colour->setGeometry(QRect(410, 10, 51, 24));
+        colour->setGeometry(QRect(540, 10, 51, 24));
         fill_color = new QPushButton(Paint);
         fill_color->setObjectName(QString::fromUtf8("fill_color"));
-        fill_color->setGeometry(QRect(470, 10, 61, 24));
+        fill_color->setGeometry(QRect(600, 10, 61, 24));
         broken_line = new QRadioButton(Paint);
         broken_line->setObjectName(QString::fromUtf8("broken_line"));
         broken_line->setGeometry(QRect(220, 10, 91, 22));
@@ -119,7 +120,7 @@ public:
         polygon->setGeometry(QRect(320, 10, 71, 22));
         clear = new QPushButton(Paint);
         clear->setObjectName(QString::fromUtf8("clear"));
-        clear->setGeometry(QRect(560, 10, 80, 24));
+        clear->setGeometry(QRect(700, 370, 80, 24));
         copy = new QPushButton(Paint);
         copy->setObjectName(QString::fromUtf8("copy"));
         copy->setGeometry(QRect(680, 50, 51, 24));
@@ -138,6 +139,9 @@ public:
         pushButton = new QPushButton(Paint);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(700, 130, 80, 24));
+        trapezoid = new QRadioButton(Paint);
+        trapezoid->setObjectName(QString::fromUtf8("trapezoid"));
+        trapezoid->setGeometry(QRect(410, 10, 81, 22));
 
         retranslateUi(Paint);
 
@@ -167,6 +171,7 @@ public:
         save->setText(QCoreApplication::translate("Paint", "save", nullptr));
         load->setText(QCoreApplication::translate("Paint", "load", nullptr));
         pushButton->setText(QCoreApplication::translate("Paint", "update libs", nullptr));
+        trapezoid->setText(QCoreApplication::translate("Paint", "trapezoid", nullptr));
     } // retranslateUi
 
 };

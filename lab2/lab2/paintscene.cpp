@@ -51,16 +51,19 @@ void PaintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     case Copy:
     {
-        BaseFigure* Figure = CurrentFigure -> CopyFigure();
-        SceneFiguresList.push_front(Figure);
-        Figure -> GetFigureType() -> setPos(event->scenePos().x() - CurrentFigure -> GetCenterPoint().x(),
-                                                          event->scenePos().y() - CurrentFigure -> GetCenterPoint().y());
+        if (CurrentFigure != NULL)
+        {
+            BaseFigure* Figure = CurrentFigure -> CopyFigure();
+            SceneFiguresList.push_front(Figure);
+            Figure -> GetFigureType() -> setPos(event->scenePos().x() - CurrentFigure -> GetCenterPoint().x(),
+                                                              event->scenePos().y() - CurrentFigure -> GetCenterPoint().y());
 
-        ListOfCenters.push_front(Figure -> GetCenterPoint());
-        this->addItem(Figure->GetFigureType());
-        this->update();
+            ListOfCenters.push_front(Figure -> GetCenterPoint());
+            this->addItem(Figure->GetFigureType());
+            this->update();
 
-        SetCurrentTool(Move);
+            SetCurrentTool(Move);
+        }
         break;
     }
 
@@ -74,7 +77,10 @@ void PaintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         if(!FiguresList.isEmpty()){
             for(int i = 0; i < items().length(); i++){
                 if(items().at(i) == FiguresList.at(0) && items().at(i) -> isVisible() && ListOfCenters.at(i).x() != 0){
-                    SceneFiguresList.at(i)->fillFigure(CurrentBrushColor);
+                    if (SceneFiguresList.at(i) != NULL)
+                    {
+                        SceneFiguresList.at(i)->fillFigure(CurrentBrushColor);
+                    }
                     break;
                 }
                 update();
@@ -247,6 +253,11 @@ void PaintScene::Deserialize(QString fileName)
     else if (type == "rectangle")
     {
         CurrentFigure = new Rectangle();
+    }
+
+    else if (type == "trapezoid")
+    {
+        CurrentFigure = new Trapezoid();
     }
 
     BaseFigure* Figure =  CurrentFigure -> DeserializeFigure(json);

@@ -6,6 +6,7 @@
 #include "line.h"
 #include "brokenline.h"
 #include "polygon.h"
+#include "trapezoid.h"
 
 Paint::Paint(QWidget *parent) :
     QWidget(parent),
@@ -220,5 +221,12 @@ void Paint::on_pushButton_clicked()
 //    QMessageLogger().debug() << "MOUSE DOWN";
 //    ui->Figures_2->setCurrentIndex(-1);
 //    ui->Figures->setCurrentIndex(-1);
+}
+
+
+void Paint::on_trapezoid_clicked()
+{
+    Trapezoid *trapezoid = new Trapezoid();
+    scene -> SetCurrentFigure(trapezoid);
 }
 
